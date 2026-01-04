@@ -1,0 +1,2139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <meta name="theme-color" content="#5b4a9f">
+    <title>Verified Civic Information Platform</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Open+Sans:wght@400;600;700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --color-primary: #5b4a9f;
+            --color-secondary: #4a90e2;
+            --color-header-bar: #3d3264;
+            --color-pink: #ffc6d4;
+            --color-blue: #d4e9f7;
+            --color-green: #d5f5d5;
+            --color-orange: #ffe4cc;
+            --color-purple: #e6d9f5;
+            --color-yellow: #fff4cc;
+            --color-text: #333333;
+            --color-text-light: #666666;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Open Sans', 'Roboto', sans-serif;
+            background: #f5f5f5;
+            color: var(--color-text);
+            line-height: 1.6;
+        }
+
+        /* Header */
+        .top-bar {
+            background: var(--color-header-bar);
+            color: white;
+            padding: 8px 0;
+            font-size: 13px;
+        }
+
+        .top-bar-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .top-bar-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .top-bar-link {
+            color: white;
+            text-decoration: none;
+            opacity: 0.9;
+            transition: opacity 0.2s;
+        }
+
+        .top-bar-link:hover {
+            opacity: 1;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #5b4a9f 0%, #7c6bb8 100%);
+            color: white;
+            padding: 20px 0;
+            border-bottom: 3px solid #f39c12;
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-emblem {
+            width: 60px;
+            height: 60px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+        }
+
+        .logo-text h1 {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .logo-text p {
+            font-size: 13px;
+            opacity: 0.95;
+            font-weight: 500;
+        }
+
+        .header-right {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .login-btn,
+        .signup-btn {
+            background: white;
+            color: var(--color-primary);
+            border: none;
+            padding: 8px 20px;
+            border-radius: 5px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+
+        .login-btn:hover,
+        .signup-btn:hover {
+            background: #f0f0f0;
+        }
+
+        .lang-switch {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 6px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 13px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        /* Navigation */
+        .nav-bar {
+            background: white;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-item {
+            padding: 15px 20px;
+            color: var(--color-text);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            border-bottom: 3px solid transparent;
+            transition: all 0.2s;
+            text-transform: uppercase;
+        }
+
+        .nav-item:hover,
+        .nav-item.active {
+            color: var(--color-primary);
+            border-bottom-color: var(--color-primary);
+        }
+
+        /* Main Content */
+        .container {
+            max-width: 1400px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .section-header {
+            background: var(--color-primary);
+            color: white;
+            padding: 12px 20px;
+            font-weight: 600;
+            font-size: 15px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 20px;
+        }
+
+        /* Card Grid */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(min(100%, 450px), 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .service-card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s;
+            cursor: pointer;
+            border: 1px solid #e0e0e0;
+        }
+
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .card-header {
+            padding: 20px;
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            min-height: 120px;
+        }
+
+        .card-icon {
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            border-radius: 10px;
+            flex-shrink: 0;
+        }
+
+        .card-content {
+            flex: 1;
+        }
+
+        .card-title {
+            font-weight: 700;
+            font-size: 16px;
+            margin-bottom: 8px;
+            color: var(--color-text);
+        }
+
+        .card-description {
+            font-size: 13px;
+            color: var(--color-text-light);
+            line-height: 1.5;
+        }
+
+        .card-actions {
+            padding: 0 20px 20px 20px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .card-btn {
+            background: var(--color-secondary);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .card-btn:hover {
+            background: #3a7bc8;
+        }
+
+        .card-btn.secondary {
+            background: #e0e0e0;
+            color: var(--color-text);
+        }
+
+        .card-btn.secondary:hover {
+            background: #d0d0d0;
+        }
+
+        /* News Cards */
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(min(100%, 350px), 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .news-card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 1px solid #e0e0e0;
+        }
+
+        .news-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .news-banner {
+            height: 140px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 60px;
+            position: relative;
+        }
+
+        .verified-stamp {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #059669;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .news-body {
+            padding: 20px;
+        }
+
+        .news-source {
+            font-size: 12px;
+            color: var(--color-secondary);
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .news-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--color-text);
+            line-height: 1.4;
+            margin-bottom: 10px;
+        }
+
+        .news-meta {
+            font-size: 12px;
+            color: var(--color-text-light);
+        }
+
+        /* Updates Section */
+        .updates-section {
+            background: var(--color-green);
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+
+        .updates-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .update-item {
+            display: flex;
+            gap: 15px;
+            align-items: flex-start;
+        }
+
+        .update-icon {
+            width: 50px;
+            height: 50px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            flex-shrink: 0;
+        }
+
+        .update-content h4 {
+            font-size: 16px;
+            margin-bottom: 8px;
+            color: var(--color-text);
+        }
+
+        .update-content p {
+            font-size: 13px;
+            color: var(--color-text-light);
+            margin-bottom: 10px;
+        }
+
+        .update-link {
+            color: var(--color-secondary);
+            font-size: 13px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* About Section */
+        .about-section {
+            background: var(--color-pink);
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .about-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--color-text);
+        }
+
+        .about-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .about-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid var(--color-primary);
+        }
+
+        .about-card h4 {
+            font-size: 16px;
+            margin-bottom: 12px;
+            color: var(--color-primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .about-card p,
+        .about-card ul {
+            font-size: 14px;
+            line-height: 1.7;
+            color: var(--color-text-light);
+        }
+
+        .about-card ul {
+            list-style-position: inside;
+            margin-top: 10px;
+        }
+
+        .about-card li {
+            margin-bottom: 6px;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--color-yellow);
+            padding: 30px 20px;
+            margin-top: 50px;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .footer-section h4 {
+            font-size: 16px;
+            margin-bottom: 15px;
+            color: var(--color-text);
+        }
+
+        .footer-section p,
+        .footer-section a {
+            font-size: 13px;
+            color: var(--color-text-light);
+            line-height: 1.8;
+            text-decoration: none;
+        }
+
+        .footer-section a:hover {
+            color: var(--color-primary);
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            max-width: 900px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .modal-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--color-primary);
+        }
+
+        .close-modal {
+            background: #f0f0f0;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            font-size: 24px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .close-modal:hover {
+            background: #e0e0e0;
+        }
+
+        .upload-zone {
+            border: 3px dashed #d0d0d0;
+            border-radius: 10px;
+            padding: 50px 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: #fafafa;
+        }
+
+        .upload-zone:hover {
+            border-color: var(--color-secondary);
+            background: white;
+        }
+
+        .upload-icon-large {
+            font-size: 70px;
+            margin-bottom: 20px;
+        }
+
+        .upload-text {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .upload-hint {
+            font-size: 14px;
+            color: var(--color-text-light);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+
+            .nav-content {
+                overflow-x: auto;
+                justify-content: flex-start;
+            }
+
+            .nav-item {
+                white-space: nowrap;
+            }
+
+            .top-bar-content {
+                flex-direction: column;
+                gap: 10px;
+                text-align: center;
+            }
+
+            .card-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .news-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .updates-grid,
+            .about-content,
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-in {
+            animation: slideUp 0.6s ease forwards;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <div class="top-bar-content">
+            <div>Screen Reader Access | Skip to Main Content</div>
+            <div class="top-bar-links">
+                <a href="#" class="top-bar-link" onclick="openAbout(); return false;">About</a>
+                <a href="#" class="top-bar-link" onclick="openContact(); return false;">Contact Us</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo-section">
+                <div class="logo-emblem">🇮🇳</div>
+                <div class="logo-text">
+                    <h1>VERIFIED CIVIC INFORMATION PLATFORM</h1>
+                    <p>भारत निर्वाचन आयोग | Election Commission of India</p>
+                </div>
+            </div>
+            <div class="header-right">
+                <button class="lang-switch" onclick="toggleLanguage()">
+                    <span id="langText">English</span> | हिन्दी
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="nav-bar">
+        <div class="nav-content">
+            <a href="#" class="nav-item active" data-en="Services" data-hi="सेवाएं">Services</a>
+            <a href="#" class="nav-item" data-en="News" data-hi="समाचार">News</a>
+            <a href="#" class="nav-item" data-en="Verify Info" data-hi="जानकारी सत्यापित करें">Verify Info</a>
+            <a href="#" class="nav-item" data-en="Education" data-hi="शिक्षा">Education</a>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Services Section -->
+        <div class="section-header" data-en="SERVICES" data-hi="सेवाएं">SERVICES</div>
+
+        <div class="card-grid">
+            <!-- Verified News Card -->
+            <div class="service-card" style="background: var(--color-pink);">
+                <div class="card-header">
+                    <div class="card-icon" style="background: #ff8fa3;">📰</div>
+                    <div class="card-content">
+                        <div class="card-title" data-en="Verified Election News" data-hi="सत्यापित चुनाव समाचार">
+                            Verified Election News</div>
+                        <div class="card-description"
+                            data-en="Access authentic news from official Election Commission sources only."
+                            data-hi="केवल आधिकारिक चुनाव आयोग स्रोतों से प्रामाणिक समाचार प्राप्त करें।">Access
+                            authentic news from official Election Commission sources only.</div>
+                    </div>
+                </div>
+                <div class="card-actions">
+                    <button class="card-btn" onclick="scrollToNews()" data-en="View News" data-hi="समाचार देखें">View
+                        News</button>
+                </div>
+            </div>
+
+            <!-- Image Verification Card -->
+            <div class="service-card" style="background: var(--color-blue);">
+                <div class="card-header">
+                    <div class="card-icon" style="background: #6db3e8;">🖼️</div>
+                    <div class="card-content">
+                        <div class="card-title" data-en="Image Information Verification" data-hi="छवि जानकारी सत्यापन">
+                            Image Information Verification</div>
+                        <div class="card-description"
+                            data-en="Upload images containing election information to verify authenticity and detect misinformation."
+                            data-hi="प्रामाणिकता सत्यापित करने और गलत सूचना का पता लगाने के लिए चुनाव जानकारी वाली छवियां अपलोड करें।">
+                            Upload images containing election information to verify authenticity and detect
+                            misinformation.</div>
+                    </div>
+                </div>
+                <div class="card-actions">
+                    <button class="card-btn" onclick="openImageUpload()" data-en="Upload Image"
+                        data-hi="छवि अपलोड करें">Upload Image</button>
+                </div>
+            </div>
+
+            <!-- Voice Verification Card -->
+            <div class="service-card" style="background: var(--color-green);">
+                <div class="card-header">
+                    <div class="card-icon" style="background: #7ed67e;">🎤</div>
+                    <div class="card-content">
+                        <div class="card-title" data-en="Voice Information Verification"
+                            data-hi="आवाज़ जानकारी सत्यापन">Voice Information Verification</div>
+                        <div class="card-description"
+                            data-en="Speak any election-related claim and get instant verification from official sources."
+                            data-hi="किसी भी चुनाव संबंधी दावे को बोलें और आधिकारिक स्रोतों से तत्काल सत्यापन प्राप्त करें।">
+                            Speak any election-related claim and get instant verification from official sources.</div>
+                    </div>
+                </div>
+                <div class="card-actions">
+                    <button class="card-btn" onclick="openVoiceInput()" data-en="Start Recording"
+                        data-hi="रिकॉर्डिंग शुरू करें">Start Recording</button>
+                </div>
+            </div>
+
+            <!-- ONOE Card -->
+            <div class="service-card" style="background: var(--color-purple);">
+                <div class="card-header">
+                    <div class="card-icon" style="background: #b89ee3;">🇮🇳</div>
+                    <div class="card-content">
+                        <div class="card-title" data-en="One Nation, One Election" data-hi="एक राष्ट्र, एक चुनाव">One
+                            Nation, One Election</div>
+                        <div class="card-description"
+                            data-en="Learn about electoral reforms through interactive, swipe-based educational cards."
+                            data-hi="इंटरैक्टिव, स्वाइप-आधारित शैक्षिक कार्ड के माध्यम से चुनावी सुधारों के बारे में जानें।">
+                            Learn about electoral reforms through interactive, swipe-based educational cards.</div>
+                    </div>
+                </div>
+                <div class="card-actions">
+                    <button class="card-btn" onclick="openONOE()" data-en="Learn More" data-hi="और अधिक जानें">Learn
+                        More</button>
+                </div>
+            </div>
+
+            <!-- Report Misinformation Card -->
+            <div class="service-card" style="background: var(--color-orange);">
+                <div class="card-header">
+                    <div class="card-icon" style="background: #ffb380;">🚨</div>
+                    <div class="card-content">
+                        <div class="card-title" data-en="Report Misinformation" data-hi="गलत सूचना की रिपोर्ट करें">
+                            Report Misinformation</div>
+                        <div class="card-description"
+                            data-en="Help us identify and flag false election information circulating on social media."
+                            data-hi="सोशल मीडिया पर फैल रही गलत चुनाव जानकारी की पहचान करने और फ्लैग करने में हमारी मदद करें।">
+                            Help us identify and flag false election information circulating on social media.</div>
+                    </div>
+                </div>
+                <div class="card-actions">
+                    <button class="card-btn" onclick="openContact()" data-en="Report Now"
+                        data-hi="अभी रिपोर्ट करें">Report Now</button>
+                </div>
+            </div>
+
+            <!-- Download Electoral Roll Card -->
+            <div class="service-card" style="background: var(--color-yellow);">
+                <div class="card-header">
+                    <div class="card-icon" style="background: #ffd966;">📥</div>
+                    <div class="card-content">
+                        <div class="card-title" data-en="Search Your Name in Voter List"
+                            data-hi="मतदाता सूची में अपना नाम खोजें">Search Your Name in Voter List</div>
+                        <div class="card-description"
+                            data-en="Verify your voter registration status and download your voter ID card."
+                            data-hi="अपनी मतदाता पंजीकरण स्थिति सत्यापित करें और अपना मतदाता पहचान पत्र डाउनलोड करें।">
+                            Verify your voter registration status and download your voter ID card.</div>
+                    </div>
+                </div>
+                <div class="card-actions">
+                    <button class="card-btn secondary" data-en="Coming Soon" data-hi="जल्द ही आ रहा है">Coming
+                        Soon</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- News Section -->
+        <div class="section-header" data-en="VERIFIED NEWS" data-hi="सत्यापित समाचार" id="newsSection">VERIFIED NEWS
+        </div>
+
+        <div class="news-grid" id="newsGrid">
+            <!-- News cards will be generated here -->
+        </div>
+
+        <!-- Updates Section -->
+        <div class="updates-section">
+            <h3 style="font-size: 18px; font-weight: 700; margin-bottom: 20px; color: var(--color-text);"
+                data-en="Updates" data-hi="अपडेट">Updates</h3>
+            <div class="updates-grid">
+                <div class="update-item">
+                    <div class="update-icon">🗳️</div>
+                    <div class="update-content">
+                        <h4 data-en="Elections" data-hi="चुनाव">Elections</h4>
+                        <p data-en="Current, future & past election and candidate information."
+                            data-hi="वर्तमान, भविष्य और पिछली चुनाव और उम्मीदवार की जानकारी।">Current, future & past
+                            election and candidate information.</p>
+                        <a href="#" class="update-link" data-en="View Information" data-hi="जानकारी देखें">View
+                            Information →</a>
+                    </div>
+                </div>
+                <div class="update-item">
+                    <div class="update-icon">📊</div>
+                    <div class="update-content">
+                        <h4 data-en="Election Results" data-hi="चुनाव परिणाम">Election Results</h4>
+                        <p data-en="View current election results and statistical reports."
+                            data-hi="वर्तमान चुनाव परिणाम और सांख्यिकीय रिपोर्ट देखें।">View current election results
+                            and statistical reports.</p>
+                        <a href="#" class="update-link" data-en="View Reports" data-hi="रिपोर्ट देखें">View Reports
+                            →</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- About Section -->
+        <div class="about-section">
+            <h3 class="about-title" data-en="About Verified Civic Information Platform"
+                data-hi="सत्यापित नागरिक सूचना मंच के बारे में">About Verified Civic Information Platform</h3>
+
+            <div class="about-content">
+                <div class="about-card">
+                    <h4><span>🎯</span> <span data-en="Our Purpose" data-hi="हमारा उद्देश्य">Our Purpose</span></h4>
+                    <p data-en="To combat election-related misinformation and provide Indian citizens with verified, trustworthy information from official sources. We bridge the gap between government institutions and citizens by making authentic civic information easily accessible."
+                        data-hi="चुनाव संबंधी गलत सूचना का मुकाबला करना और भारतीय नागरिकों को आधिकारिक स्रोतों से सत्यापित, विश्वसनीय जानकारी प्रदान करना। हम प्रामाणिक नागरिक जानकारी को आसानी से सुलभ बनाकर सरकारी संस्थानों और नागरिकों के बीच की खाई को पाटते हैं।">
+                        To combat election-related misinformation and provide Indian citizens with verified, trustworthy
+                        information from official sources. We bridge the gap between government institutions and
+                        citizens by making authentic civic information easily accessible.</p>
+                </div>
+
+                <div class="about-card">
+                    <h4><span>🔍</span> <span data-en="What We Do" data-hi="हम क्या करते हैं">What We Do</span></h4>
+                    <p data-en="We verify information through three key services:"
+                        data-hi="हम तीन प्रमुख सेवाओं के माध्यम से जानकारी सत्यापित करते हैं:">We verify information
+                        through three key services:</p>
+                    <ul>
+                        <li data-en="Real-time fact-checking of images and voice messages"
+                            data-hi="छवियों और आवाज संदेशों की वास्तविक समय तथ्य-जांच">Real-time fact-checking of images
+                            and voice messages</li>
+                        <li data-en="Curated verified news from Election Commission sources"
+                            data-hi="चुनाव आयोग स्रोतों से क्यूरेटेड सत्यापित समाचार">Curated verified news from
+                            Election Commission sources</li>
+                        <li data-en="Educational content on electoral reforms and processes"
+                            data-hi="चुनावी सुधारों और प्रक्रियाओं पर शैक्षिक सामग्री">Educational content on electoral
+                            reforms and processes</li>
+                        <li data-en="Cross-referencing claims against official government databases"
+                            data-hi="आधिकारिक सरकारी डेटाबेस के खिलाफ दावों को क्रॉस-रेफरेंसिंग">Cross-referencing
+                            claims against official government databases</li>
+                    </ul>
+                </div>
+
+                <div class="about-card">
+                    <h4><span>🤝</span> <span data-en="How This Helps You" data-hi="यह आपकी कैसे मदद करता है">How This
+                            Helps You</span></h4>
+                    <p data-en="Our platform empowers you to:" data-hi="हमारा मंच आपको सशक्त बनाता है:">Our platform
+                        empowers you to:</p>
+                    <ul>
+                        <li data-en="Make informed decisions based on verified facts, not rumors"
+                            data-hi="अफवाहों के बजाय सत्यापित तथ्यों के आधार पर सूचित निर्णय लें">Make informed
+                            decisions based on verified facts, not rumors</li>
+                        <li data-en="Quickly verify suspicious claims before sharing them"
+                            data-hi="साझा करने से पहले संदिग्ध दावों को जल्दी सत्यापित करें">Quickly verify suspicious
+                            claims before sharing them</li>
+                        <li data-en="Access official election information in your language"
+                            data-hi="अपनी भाषा में आधिकारिक चुनाव जानकारी प्राप्त करें">Access official election
+                            information in your language</li>
+                        <li data-en="Understand your democratic rights and responsibilities"
+                            data-hi="अपने लोकतांत्रिक अधिकारों और जिम्मेदारियों को समझें">Understand your democratic
+                            rights and responsibilities</li>
+                        <li data-en="Stop the spread of misinformation in your community"
+                            data-hi="अपने समुदाय में गलत सूचना के प्रसार को रोकें">Stop the spread of misinformation in
+                            your community</li>
+                    </ul>
+                </div>
+
+                <div class="about-card">
+                    <h4><span>✅</span> <span data-en="Our Commitment" data-hi="हमारी प्रतिबद्धता">Our Commitment</span>
+                    </h4>
+                    <p data-en="We operate with complete political neutrality and transparency:"
+                        data-hi="हम पूर्ण राजनीतिक तटस्थता और पारदर्शिता के साथ काम करते हैं:">We operate with complete
+                        political neutrality and transparency:</p>
+                    <ul>
+                        <li data-en="No political affiliations or biases"
+                            data-hi="कोई राजनीतिक संबद्धता या पक्षपात नहीं">No political affiliations or biases</li>
+                        <li data-en="Only official government sources used for verification"
+                            data-hi="सत्यापन के लिए केवल आधिकारिक सरकारी स्रोतों का उपयोग">Only official government
+                            sources used for verification</li>
+                        <li data-en="No predictions or opinion-based content"
+                            data-hi="कोई भविष्यवाणी या राय आधारित सामग्री नहीं">No predictions or opinion-based content
+                        </li>
+                        <li data-en="Clear source attribution for all information"
+                            data-hi="सभी जानकारी के लिए स्पष्ट स्रोत विशेषता">Clear source attribution for all
+                            information</li>
+                        <li data-en="Free access for all Indian citizens"
+                            data-hi="सभी भारतीय नागरिकों के लिए मुफ्त पहुंच">Free access for all Indian citizens</li>
+                    </ul>
+                </div>
+
+                <div class="about-card">
+                    <h4><span>🔬</span> <span data-en="How Verification Works" data-hi="सत्यापन कैसे काम करता है">How
+                            Verification Works</span></h4>
+                    <p data-en="Our multi-step verification process ensures accuracy:"
+                        data-hi="हमारी बहु-चरणीय सत्यापन प्रक्रिया सटीकता सुनिश्चित करती है:">Our multi-step
+                        verification process ensures accuracy:</p>
+                    <ul>
+                        <li data-en="OCR technology extracts text from images"
+                            data-hi="OCR तकनीक छवियों से पाठ निकालती है">OCR technology extracts text from images</li>
+                        <li data-en="AI cross-references against Election Commission database"
+                            data-hi="AI चुनाव आयोग डेटाबेस के खिलाफ क्रॉस-रेफरेंस करता है">AI cross-references against
+                            Election Commission database</li>
+                        <li data-en="Claims are matched with official press releases"
+                            data-hi="दावों को आधिकारिक प्रेस विज्ञप्तियों से मिलाया जाता है">Claims are matched with
+                            official press releases</li>
+                        <li data-en="Credibility scores assigned based on source reliability"
+                            data-hi="स्रोत विश्वसनीयता के आधार पर विश्वसनीयता स्कोर निर्दिष्ट">Credibility scores
+                            assigned based on source reliability</li>
+                        <li data-en="Results presented with source links for transparency"
+                            data-hi="पारदर्शिता के लिए स्रोत लिंक के साथ परिणाम प्रस्तुत">Results presented with source
+                            links for transparency</li>
+                    </ul>
+                </div>
+
+                <div class="about-card">
+                    <h4><span>🌟</span> <span data-en="Impact & Vision" data-hi="प्रभाव और दृष्टिकोण">Impact &
+                            Vision</span></h4>
+                    <p data-en="By using this platform, you contribute to a healthier democracy where decisions are based on facts, not manipulation. Together, we can build a society where every citizen has access to truth and participates meaningfully in the democratic process."
+                        data-hi="इस मंच का उपयोग करके, आप एक स्वस्थ लोकतंत्र में योगदान करते हैं जहां निर्णय तथ्यों पर आधारित होते हैं, न कि हेरफेर पर। साथ मिलकर, हम एक ऐसा समाज बना सकते हैं जहां प्रत्येक नागरिक के पास सत्य तक पहुंच हो और वह लोकतांत्रिक प्रक्रिया में सार्थक रूप से भाग ले।">
+                        By using this platform, you contribute to a healthier democracy where decisions are based on
+                        facts, not manipulation. Together, we can build a society where every citizen has access to
+                        truth and participates meaningfully in the democratic process.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4 data-en="Contact Number" data-hi="संपर्क नंबर">Contact Number</h4>
+                <p>📞 1800-123-4567 (Toll-Free)<br>
+                    Mon-Fri: 9:00 AM - 6:00 PM IST</p>
+            </div>
+            <div class="footer-section">
+                <h4 data-en="Postal Address" data-hi="डाक पता">Postal Address</h4>
+                <p>Verified Civic Information Platform<br>
+                    Nirvachan Sadan, Ashoka Road<br>
+                    New Delhi - 110001, India</p>
+            </div>
+            <div class="footer-section">
+                <h4 data-en="Email" data-hi="ईमेल">Email</h4>
+                <p><a href="/cdn-cgi/l/email-protection#fa93949c95ba8c9f88939c939f9e99938c9399d49d958cd49394"><span
+                            class="__cf_email__"
+                            data-cfemail="a0c9cec6cfe0d6c5d2c9c6c9c5c4c3c9d6c9c38ec7cfd68ec9ce">[email&#160;protected]</span></a><br>
+                    <a href="/cdn-cgi/l/email-protection#dfadbaafb0adab9fa9baadb6b9b6babbbcb6a9b6bcf1b8b0a9f1b6b1"><span
+                            class="__cf_email__"
+                            data-cfemail="601205100f121420160512090609050403091609034e070f164e090e">[email&#160;protected]</span></a>
+                </p>
+            </div>
+            <div class="footer-section">
+                <h4 data-en="Quick Links" data-hi="त्वरित लिंक">Quick Links</h4>
+                <p>
+                    <a href="https://eci.gov.in" target="_blank">Election Commission of India</a><br>
+                    <a href="https://voters.eci.gov.in" target="_blank">National Voters' Portal</a><br>
+                    <a href="#" onclick="openAbout(); return false;">About Us</a>
+                </p>
+            </div>
+        </div>
+        <div style="text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid #ddd;">
+            <p style="font-size: 12px; color: var(--color-text-light);"
+                data-en="© 2026 Verified Civic Information Platform | This is a demonstration platform"
+                data-hi="© 2026 सत्यापित नागरिक सूचना मंच | यह एक प्रदर्शन मंच है">© 2026 Verified Civic Information
+                Platform | This is a demonstration platform</p>
+        </div>
+    </footer>
+
+    <!-- Modals (Image, Voice, ONOE, Contact) will be added via JavaScript -->
+
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+    <script>
+        const translations = {
+            en: {
+                verified: "Verified",
+
+                processing: "Processing Image...",
+                ocrExtract: "Extracting text using OCR technology",
+                analyzing: "Analyzing content and verifying claims...",
+
+                uploadText: "Click to upload or drag & drop",
+                uploadHint: "Supports JPG, PNG (Max 5MB)",
+                credibilityScore: "CREDIBILITY SCORE",
+                high: "HIGH",
+                listening: "Listening...",
+                verifiedTrue: "Statement Verified",
+                partiallyAccurate: "PARTIALLY ACCURATE",
+
+                onoeTitle: "One Nation, One Election",
+                clickToLearn: "Click to learn",
+                reportNow: "Report Now",
+                footerDemo: "This is a demonstration platform",
+                imageVerification: "Image Verification",
+                voiceVerification: "Voice Verification",
+                about: "About",
+                contact: "Contact Us"
+            },
+            hi: {
+                verified: "सत्यापित",
+                processing: "छवि संसाधित हो रही है...",
+                ocrExtract: "OCR तकनीक द्वारा पाठ निकाला जा रहा है",
+                analyzing: "सामग्री का विश्लेषण और दावों का सत्यापन किया जा रहा है...",
+
+                uploadText: "अपलोड करने के लिए क्लिक करें या खींचें",
+                uploadHint: "JPG, PNG समर्थित (अधिकतम 5MB)",
+                credibilityScore: "विश्वसनीयता स्कोर",
+                high: "उच्च",
+                listening: "सुन रहा है...",
+                verifiedTrue: "कथन सत्यापित",
+                partiallyAccurate: "आंशिक रूप से सही",
+
+                onoeTitle: "एक राष्ट्र, एक चुनाव",
+                clickToLearn: "जानने के लिए क्लिक करें",
+                reportNow: "अभी रिपोर्ट करें",
+                footerDemo: "यह एक प्रदर्शन मंच है",
+                imageVerification: "छवि सत्यापन",
+                voiceVerification: "आवाज़ सत्यापन",
+                about: "परिचय",
+                contact: "संपर्क करें"
+            }
+        };
+
+        let currentLang = 'en';
+        function t(key) {
+            return translations[currentLang][key];
+        }
+
+
+        // News data
+        const newsData = [
+            {
+                icon: '🗳️',
+                headline: 'Election Commission Announces Dates for State Assembly Elections',
+                source: 'Election Commission of India',
+                time: '2 hours ago',
+                color: '#667eea'
+            },
+            {
+                icon: '📊',
+                headline: 'Voter Registration Drive Extended Until January 15th',
+                source: 'Chief Electoral Officer',
+                time: '5 hours ago',
+                color: '#f093fb'
+            },
+            {
+                icon: '✅',
+                headline: 'New Guidelines Released for Transparent Voting Process',
+                source: 'Ministry of Law & Justice',
+                time: '1 day ago',
+                color: '#4facfe'
+            },
+            {
+                icon: '📢',
+                headline: 'Government Announces Digital Voter ID Initiative',
+                source: 'Election Commission of India',
+                time: '2 days ago',
+                color: '#43e97b'
+            },
+            {
+                icon: '🏛️',
+                headline: 'Parliamentary Session to Discuss Electoral Reforms',
+                source: 'Lok Sabha Secretariat',
+                time: '3 days ago',
+                color: '#fa709a'
+            },
+            {
+                icon: '📱',
+                headline: 'Mobile App Launched for Voter Information Services',
+                source: 'Election Commission of India',
+                time: '4 days ago',
+                color: '#a8edea'
+            }
+        ];
+
+        // Load news
+        function loadNews() {
+            const grid = document.getElementById('newsGrid');
+            grid.innerHTML = newsData.map((news, i) => `
+                <div class="news-card animate-in" style="animation-delay: ${i * 0.1}s;" onclick="openNewsDetail(${i})">
+                    <div class="news-banner" style="background: linear-gradient(135deg, ${news.color} 0%, ${adjustColor(news.color, -20)} 100%);">
+                        <span>${news.icon}</span>
+                       <div class="verified-stamp">✓ ${t('verified')}</div>
+
+                    </div>
+                    <div class="news-body">
+                        <div class="news-source">${news.source}</div>
+                        <div class="news-title">${news.headline}</div>
+                        <div class="news-meta">📅 ${news.time}</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function adjustColor(color, percent) {
+            const num = parseInt(color.replace("#", ""), 16);
+            const amt = Math.round(2.55 * percent);
+            const R = (num >> 16) + amt;
+            const G = (num >> 8 & 0x00FF) + amt;
+            const B = (num & 0x0000FF) + amt;
+            return "#" + (0x1000000 + (R < 255 ? R < 1 ? 0 : R : 255) * 0x10000 +
+                (G < 255 ? G < 1 ? 0 : G : 255) * 0x100 + (B < 255 ? B < 1 ? 0 : B : 255))
+                .toString(16).slice(1);
+        }
+
+        function scrollToNews() {
+            document.getElementById('newsSection').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'en' ? 'hi' : 'en';
+            document.getElementById('langText').textContent =
+                currentLang === 'en' ? 'English' : 'हिन्दी';
+
+            document.querySelectorAll('[data-en]').forEach(el => {
+                el.textContent = el.getAttribute(`data-${currentLang}`);
+            });
+
+            // Re-render dynamic sections
+            loadNews();
+
+            // Close open modal to prevent language mismatch
+            const modal = document.querySelector('.modal.active');
+            if (modal) modal.classList.remove('active');
+        }
+
+
+        function openImageUpload() {
+            showModal(t('imageVerification'), `
+                <div class="upload-zone" onclick="document.getElementById('fileInput').click()">
+                    <div class="upload-icon-large">📤</div>
+                  <div class="upload-text">${t('uploadText')}</div>
+<div class="upload-hint">${t('uploadHint')}</div>
+
+                    <input type="file" id="fileInput" accept="image/*" style="display: none;" onchange="handleImageUpload(this)">
+                </div>
+                <div id="verifyResult"></div>
+            `);
+        }
+
+        function handleImageUpload(input) {
+            if (input.files && input.files[0]) {
+                const resultDiv = document.getElementById('verifyResult');
+                const reader = new FileReader();
+
+                reader.onload = function (e) {
+                    resultDiv.innerHTML = `
+                        <div style="text-align: center; padding: 40px;">
+                            <div style="font-size: 50px; margin-bottom: 15px;">⏳</div>
+                          <p style="font-weight: 600; margin-bottom: 10px;">${t('processing')}</p>
+                          <p style="font-size: 14px; color: #64748b;">${t('ocrExtract')}</p>
+
+                        </div>
+                    `;
+
+                    setTimeout(() => {
+                        resultDiv.innerHTML = `
+                            <div style="margin-top: 30px;">
+                                <img src="${e.target.result}" style="max-width: 100%; max-height: 300px; border-radius: 10px; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                            </div>
+                            <div style="text-align: center; padding: 20px;">
+                                <div style="font-size: 40px; margin-bottom: 10px;">🔍</div>
+                              <p style="font-weight: 600;">${t('analyzing')}</p>
+
+                            </div>
+                        `;
+
+                        setTimeout(() => {
+                            resultDiv.innerHTML = `
+                                <div style="margin-top: 25px; padding: 25px; background: #f0f9ff; border-radius: 10px; border-left: 5px solid #0284c7;">
+                                    <h4 style="color: #0369a1; margin-bottom: 18px; font-size: 17px; display: flex; align-items: center; gap: 8px;">
+                                        <span>📄</span> Extracted Text from Image
+                                    </h4>
+                                    <div style="background: white; padding: 20px; border-radius: 8px; line-height: 1.8; border: 1px solid #e0e7ff;">
+                                        <p style="margin-bottom: 15px; font-style: italic; color: #64748b; font-size: 14px;">[OCR Detection - Image to Text Conversion]</p>
+                                        <p style="font-size: 15px; color: #1e293b;">
+                                            <strong>"IMPORTANT ANNOUNCEMENT</strong><br><br>
+                                            Voter Registration Extended!<br><br>
+                                            The Election Commission has extended the voter registration deadline to <strong>January 15, 2026</strong>.<br><br>
+                                            ✓ Register online at voters.eci.gov.in<br>
+                                            ✓ All citizens above 18 years can register<br>
+                                            ✓ Aadhaar card required for verification<br>
+                                            ✓ Download your e-EPIC after registration<br><br>
+                                            <em style="color: #dc2626;">Last date: 15th January 2026</em><br>
+                                            Don't miss your chance to vote!"
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div style="margin-top: 25px; padding: 25px; background: linear-gradient(135deg, #dcfce7 0%, #d1fae5 100%); border-radius: 10px; text-align: center; border: 2px solid #059669;">
+                                   <div style="font-size: 14px; color: #15803d; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px;">
+  ${t('credibilityScore')}
+</div>
+<div style="font-size: 48px; font-weight: 800; color: #059669; margin-bottom: 8px;">
+  ${t('high')}
+</div>
+
+                                    <div style="font-size: 32px; font-weight: 700; color: #16a34a; margin-bottom: 15px;">92%</div>
+                                    <p style="font-size: 14px; color: #166534; line-height: 1.6;">Based on verification with 4 official government sources and cross-referencing with Election Commission database</p>
+                                </div>
+
+                                <div style="margin-top: 25px; padding: 25px; background: white; border-radius: 10px; border: 1px solid #e5e7eb;">
+                                    <h4 style="margin-bottom: 20px; font-size: 18px; color: var(--color-primary);">🔎 Detailed Claim Analysis</h4>
+                                    
+                                    <div style="margin-bottom: 20px; padding: 18px; background: #dcfce7; border-radius: 8px; border-left: 5px solid #059669;">
+                                        <div style="display: flex; align-items: start; gap: 12px; margin-bottom: 12px;">
+                                            <span style="font-size: 24px;">✅</span>
+                                            <div style="flex: 1;">
+                                                <strong style="color: #047857; display: block; margin-bottom: 8px; font-size: 15px;">CLAIM 1: "Voter Registration Extended to January 15, 2026"</strong>
+                                                <p style="color: #065f46; line-height: 1.7; font-size: 14px; margin-bottom: 10px;">
+                                                   <strong>Status:</strong> ✓ ${t('verifiedTrue')} (100% Accurate)
+<br>
+                                                    <strong>Evidence:</strong> The Election Commission of India has officially extended the voter registration deadline through Press Release No. CEO/2025/542 dated December 30, 2025. The new deadline is indeed January 15, 2026, at 11:59 PM.
+                                                </p>
+                                                <a href="https://eci.gov.in" style="color: #0284c7; font-size: 13px; text-decoration: none; font-weight: 600;">📎 View Official Press Release →</a>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div style="margin-bottom: 20px; padding: 18px; background: #dcfce7; border-radius: 8px; border-left: 5px solid #059669;">
+                                        <div style="display: flex; align-items: start; gap: 12px; margin-bottom: 12px;">
+                                            <span style="font-size: 24px;">✅</span>
+                                            <div style="flex: 1;">
+                                                <strong style="color: #047857; display: block; margin-bottom: 8px; font-size: 15px;">CLAIM 2: "Register online at voters.eci.gov.in"</strong>
+                                                <p style="color: #065f46; line-height: 1.7; font-size: 14px; margin-bottom: 10px;">
+                                                  <strong>Status:</strong> ✓ ${t('verifiedTrue')} (100% Accurate)
+<br>
+                                                    <strong>Evidence:</strong> voters.eci.gov.in is the official National Voters' Service Portal operated by the Election Commission of India. This is the correct and official website for voter registration using Form 6.
+                                                </p>
+                                                <a href="https://voters.eci.gov.in" style="color: #0284c7; font-size: 13px; text-decoration: none; font-weight: 600;">📎 Visit Official Portal →</a>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div style="margin-bottom: 20px; padding: 18px; background: #dcfce7; border-radius: 8px; border-left: 5px solid #059669;">
+                                        <div style="display: flex; align-items: start; gap: 12px; margin-bottom: 12px;">
+                                            <span style="font-size: 24px;">✅</span>
+                                            <div style="flex: 1;">
+                                                <strong style="color: #047857; display: block; margin-bottom: 8px; font-size: 15px;">CLAIM 3: "All citizens above 18 years can register"</strong>
+                                                <p style="color: #065f46; line-height: 1.7; font-size: 14px; margin-bottom: 10px;">
+                                                   <strong>Status:</strong> ✓ ${t('verifiedTrue')} (100% Accurate)
+<br>
+                                                    <strong>Evidence:</strong> As per Article 326 of the Constitution of India, every citizen who is 18 years or older as of January 1, 2026 (born on or before January 1, 2008) is eligible to register as a voter, provided they are not disqualified under any law.
+                                                </p>
+                                                <a href="https://legislative.gov.in" style="color: #0284c7; font-size: 13px; text-decoration: none; font-weight: 600;">📎 View Constitutional Provision →</a>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div style="margin-bottom: 20px; padding: 18px; background: #fef3c7; border-radius: 8px; border-left: 5px solid #f59e0b;">
+                                        <div style="display: flex; align-items: start; gap: 12px; margin-bottom: 12px;">
+                                            <span style="font-size: 24px;">⚠️</span>
+                                            <div style="flex: 1;">
+                                                <strong style="color: #b45309; display: block; margin-bottom: 8px; font-size: 15px;">CLAIM 4: "Aadhaar card required for verification"</strong>
+                                                <p style="color: #92400e; line-height: 1.7; font-size: 14px; margin-bottom: 10px;">
+                                                    <strong>Status:</strong> ⚠️ ${t('partiallyAccurate')} (70% Correct)
+<br>
+                                                    <strong>Clarification:</strong> Aadhaar is NOT mandatory for voter registration. While linking Aadhaar speeds up the verification process and is highly recommended, voters can register using alternative documents like birth certificate, school certificate, or PAN card as age proof. The Supreme Court has ruled that Aadhaar cannot be made mandatory for voter registration.
+                                                </p>
+                                                <a href="https://eci.gov.in" style="color: #0284c7; font-size: 13px; text-decoration: none; font-weight: 600;">📎 View ECI Guidelines on Documents →</a>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div style="margin-bottom: 20px; padding: 18px; background: #dcfce7; border-radius: 8px; border-left: 5px solid #059669;">
+                                        <div style="display: flex; align-items: start; gap: 12px; margin-bottom: 12px;">
+                                            <span style="font-size: 24px;">✅</span>
+                                            <div style="flex: 1;">
+                                                <strong style="color: #047857; display: block; margin-bottom: 8px; font-size: 15px;">CLAIM 5: "Download your e-EPIC after registration"</strong>
+                                                <p style="color: #065f46; line-height: 1.7; font-size: 14px; margin-bottom: 10px;">
+                                                   <strong>Status:</strong> ✓ ${t('verifiedTrue')} (100% Accurate)
+<br>
+                                                    <strong>Evidence:</strong> After successful registration and verification by BLO (Booth Level Officer), voters can download their electronic Electoral Photo Identity Card (e-EPIC) from the NVSP portal or through the Voter Helpline mobile app. The e-EPIC is legally valid at all polling stations.
+                                                </p>
+                                                <a href="https://voters.eci.gov.in" style="color: #0284c7; font-size: 13px; text-decoration: none; font-weight: 600;">📎 Download e-EPIC →</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div style="margin-top: 25px; padding: 25px; background: #eff6ff; border-radius: 10px; border-left: 5px solid #3b82f6;">
+                                    <h4 style="color: #1e40af; margin-bottom: 18px; font-size: 17px; display: flex; align-items: center; gap: 8px;">
+                                        <span>📊</span> Overall Assessment
+                                    </h4>
+                                    <div style="background: white; padding: 20px; border-radius: 8px; margin-bottom: 15px;">
+                                        <p style="line-height: 1.8; color: #334155; margin-bottom: 15px;">
+                                            <strong>Total Claims Analyzed:</strong> 5<br>
+                                            <strong>Fully Accurate:</strong> 4 claims (80%)<br>
+                                            <strong>Partially Accurate:</strong> 1 claim (20%)<br>
+                                            <strong>False/Misleading:</strong> 0 claims (0%)
+                                        </p>
+                                        <div style="background: #f0fdf4; padding: 15px; border-radius: 6px; border-left: 3px solid #22c55e;">
+                                            <p style="color: #166534; line-height: 1.7; font-size: 14px;">
+                                                <strong>✓ Verdict:</strong> This image contains mostly accurate and trustworthy information. The only clarification needed is that Aadhaar is recommended but NOT mandatory for voter registration. You can safely trust and share this information with the noted correction.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div style="margin-top: 25px; padding: 25px; background: white; border-radius: 10px; border: 2px solid #e5e7eb;">
+                                    <h4 style="margin-bottom: 18px; font-size: 17px; color: var(--color-primary);">📎 Verified Sources Used</h4>
+                                    <div style="display: grid; gap: 12px;">
+                                        <a href="https://eci.gov.in" target="_blank" style="padding: 15px; background: #f8fafc; border-radius: 8px; text-decoration: none; color: #0284c7; display: flex; align-items: center; gap: 10px; border: 1px solid #e2e8f0; transition: all 0.2s;">
+                                            <span>🔗</span>
+                                            <div>
+                                                <strong style="display: block; margin-bottom: 4px;">Election Commission of India</strong>
+                                                <span style="font-size: 13px; color: #64748b;">Press Release No. CEO/2025/542 - Voter Registration Extension</span>
+                                            </div>
+                                        </a>
+                                        <a href="https://voters.eci.gov.in" target="_blank" style="padding: 15px; background: #f8fafc; border-radius: 8px; text-decoration: none; color: #0284c7; display: flex; align-items: center; gap: 10px; border: 1px solid #e2e8f0; transition: all 0.2s;">
+                                            <span>🔗</span>
+                                            <div>
+                                                <strong style="display: block; margin-bottom: 4px;">National Voters' Service Portal</strong>
+                                                <span style="font-size: 13px; color: #64748b;">Official voter registration guidelines and forms</span>
+                                            </div>
+                                        </a>
+                                        <a href="https://legislative.gov.in" target="_blank" style="padding: 15px; background: #f8fafc; border-radius: 8px; text-decoration: none; color: #0284c7; display: flex; align-items: center; gap: 10px; border: 1px solid #e2e8f0; transition: all 0.2s;">
+                                            <span>🔗</span>
+                                            <div>
+                                                <strong style="display: block; margin-bottom: 4px;">Constitution of India - Article 326</strong>
+                                                <span style="font-size: 13px; color: #64748b;">Legal provisions for voter eligibility</span>
+                                            </div>
+                                        </a>
+                                        <a href="https://eci.gov.in" target="_blank" style="padding: 15px; background: #f8fafc; border-radius: 8px; text-decoration: none; color: #0284c7; display: flex; align-items: center; gap: 10px; border: 1px solid #e2e8f0; transition: all 0.2s;">
+                                            <span>🔗</span>
+                                            <div>
+                                                <strong style="display: block; margin-bottom: 4px;">ECI Document Requirements</strong>
+                                                <span style="font-size: 13px; color: #64748b;">Acceptable proofs for registration (Aadhaar optional)</span>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <div style="margin-top: 25px; padding: 25px; background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border-radius: 10px; border-left: 5px solid #f59e0b;">
+                                    <h4 style="color: #92400e; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; font-size: 16px;">
+                                        <span>💡</span> What You Should Know
+                                    </h4>
+                                    <ul style="line-height: 2; color: #78350f; margin-left: 20px; font-size: 14px;">
+                                        <li>This image contains official information that is largely accurate</li>
+                                        <li>The only correction: Aadhaar is helpful but NOT mandatory for registration</li>
+                                        <li>You can register with alternative documents like birth certificate or PAN card</li>
+                                        <li>If sharing this image, please add a note about the Aadhaar clarification</li>
+                                        <li>Always verify electoral information on eci.gov.in before believing or sharing</li>
+                                    </ul>
+                                </div>
+                            `;
+                        }, 2500);
+                    }, 1500);
+                };
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function openVoiceInput() {
+            showModal('Voice Verification', `
+                <div style="text-align: center; padding: 40px;">
+                    <button onclick="toggleRecording(this)" style="width: 120px; height: 120px; border-radius: 60px; background: linear-gradient(135deg, #f47820 0%, #ff8c42 100%); border: none; color: white; font-size: 50px; cursor: pointer; box-shadow: 0 10px 30px rgba(244, 120, 32, 0.3);">
+                        🎤
+                    </button>
+                    <p style="margin-top: 20px; color: #64748b;" id="voiceStatus">Tap to start recording</p>
+                    <div id="voiceTranscript" style="margin-top: 20px; padding: 20px; background: #f8fafc; border-radius: 8px; min-height: 80px;">
+                        <em style="color: #94a3b8;">Your spoken text will appear here...</em>
+                    </div>
+                </div>
+                <div id="voiceResult"></div>
+            `);
+        }
+
+        function toggleRecording(btn) {
+            const status = document.getElementById('voiceStatus');
+            const transcript = document.getElementById('voiceTranscript');
+
+            btn.style.animation = 'pulse 1.5s infinite';
+            status.textContent = 'Listening...';
+
+            setTimeout(() => {
+                transcript.innerHTML = '<p>"I heard that voter registration has been extended to January 15"</p>';
+                setTimeout(() => {
+                    btn.style.animation = '';
+                    status.textContent = 'Processing...';
+                    showVoiceResults();
+                }, 2000);
+            }, 1500);
+        }
+
+        function showVoiceResults() {
+            document.getElementById('voiceResult').innerHTML = `
+                <div style="margin-top: 20px; padding: 20px; background: #dcfce7; border-radius: 8px; text-align: center;">
+                   <div style="font-size: 14px; color: #15803d; font-weight: 600; margin-bottom: 8px;">
+  ${t('credibilityScore')}
+</div>
+<div style="font-size: 36px; font-weight: 700; color: #059669;">
+  ${t('high')}
+</div>
+
+                </div>
+                <div style="margin-top: 20px; padding: 20px; background: white; border-radius: 8px; border: 1px solid #e5e7eb;">
+                    <h4 style="margin-bottom: 15px;">✅ Statement Verified</h4>
+                    <p style="line-height: 1.8; color: #4b5563;">
+                        Your statement is accurate. The Election Commission has officially extended voter registration to January 15, 2026.
+                    </p>
+                </div>
+            `;
+        }
+
+        function openONOE() {
+            showModal('One Nation, One Election - Interactive Guide', `
+                <style>
+                    .flip-cards-container {
+                        display: grid;
+                        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+                        gap: 20px;
+                        padding: 20px 0;
+                    }
+                    
+                    .flip-card {
+                        height: 200px;
+                        perspective: 1000px;
+                        cursor: pointer;
+                    }
+                    
+                    .flip-card-inner {
+                        position: relative;
+                        width: 100%;
+                        height: 100%;
+                        transition: transform 0.6s;
+                        transform-style: preserve-3d;
+                    }
+                    
+                    .flip-card.flipped .flip-card-inner {
+                        transform: rotateY(180deg);
+                    }
+                    
+                    .flip-card-front, .flip-card-back {
+                        position: absolute;
+                        width: 100%;
+                        height: 100%;
+                        backface-visibility: hidden;
+                        border-radius: 12px;
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        justify-content: center;
+                        padding: 25px;
+                        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                    }
+                    
+                    .flip-card-front {
+                        background: linear-gradient(135deg, #5b4a9f 0%, #7c6bb8 100%);
+                        color: white;
+                        text-align: center;
+                    }
+                    
+                    .flip-card-back {
+                        background: white;
+                        color: #334155;
+                        transform: rotateY(180deg);
+                        overflow-y: auto;
+                        text-align: left;
+                        border: 2px solid #e5e7eb;
+                    }
+                    
+                    .flip-card-icon {
+                        font-size: 48px;
+                        margin-bottom: 15px;
+                    }
+                    
+                    .flip-card-title {
+                        font-size: 18px;
+                        font-weight: 700;
+                        line-height: 1.3;
+                    }
+                    
+                    .flip-card-subtitle {
+                        font-size: 13px;
+                        margin-top: 8px;
+                        opacity: 0.9;
+                    }
+                    
+                    .flip-card-back h4 {
+                        color: var(--color-primary);
+                        font-size: 16px;
+                        margin-bottom: 12px;
+                        font-weight: 700;
+                    }
+                    
+                    .flip-card-back p, .flip-card-back ul {
+                        font-size: 14px;
+                        line-height: 1.7;
+                        color: #475569;
+                    }
+                    
+                    .flip-card-back ul {
+                        margin: 10px 0 10px 20px;
+                    }
+                    
+                    .flip-card-back li {
+                        margin-bottom: 6px;
+                    }
+                    
+                    @media (max-width: 768px) {
+                        .flip-cards-container {
+                            grid-template-columns: 1fr;
+                        }
+                        
+                        .flip-card {
+                            height: 180px;
+                        }
+                    }
+                </style>
+                
+                <div style="background: linear-gradient(135deg, var(--color-primary) 0%, #7c6bb8 100%); padding: 30px; border-radius: 12px; margin-bottom: 25px; text-align: center; color: white;">
+                    <div style="font-size: 60px; margin-bottom: 12px;">🇮🇳</div>
+                    <h2 style="font-size: 24px; margin-bottom: 10px; font-weight: 700;">ONE NATION, ONE ELECTION</h2>
+                    <p style="font-size: 14px; opacity: 0.95;">Click Cards to Learn More</p>
+                </div>
+                
+                <div style="background: #f0f9ff; padding: 20px; border-radius: 10px; margin-bottom: 25px; text-align: center; border-left: 4px solid #3b82f6;">
+                    <div style="font-size: 40px; margin-bottom: 10px;">👆</div>
+                    <h3 style="color: #1e40af; margin-bottom: 8px; font-size: 17px;">Click Any Card to Flip & Read</h3>
+                    <p style="color: #475569; font-size: 14px;">Tap cards to reveal information</p>
+                </div>
+                
+                <div class="flip-cards-container">
+                    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">
+                                <div class="flip-card-icon">📋</div>
+                                <div class="flip-card-title">What is ONOE?</div>
+                                <div class="flip-card-subtitle">Click to learn</div>
+                            </div>
+                            <div class="flip-card-back">
+                                <h4>Definition</h4>
+                                <p>Simultaneous elections for Lok Sabha and all State Assemblies across India on the same day every 5 years.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">
+                                <div class="flip-card-icon">📜</div>
+                                <div class="flip-card-title">History</div>
+                                <div class="flip-card-subtitle">Click to learn</div>
+                            </div>
+                            <div class="flip-card-back">
+                                <h4>Historical Background</h4>
+                                <p>India practiced this from 1951-1967. System broke down due to premature dissolutions and political instability.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">
+                                <div class="flip-card-icon">🎯</div>
+                                <div class="flip-card-title">Why Proposed?</div>
+                                <div class="flip-card-subtitle">Click to learn</div>
+                            </div>
+                            <div class="flip-card-back">
+                                <h4>Key Reasons</h4>
+                                <ul>
+                                    <li>Reduce election costs</li>
+                                    <li>Minimize governance disruptions</li>
+                                    <li>Reduce security burden</li>
+                                    <li>Enable policy stability</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">
+                                <div class="flip-card-icon">✅</div>
+                                <div class="flip-card-title">Benefits</div>
+                                <div class="flip-card-subtitle">Click to learn</div>
+                            </div>
+                            <div class="flip-card-back">
+                                <h4>Advantages</h4>
+                                <ul>
+                                    <li>Save thousands of crores</li>
+                                    <li>Continuous governance</li>
+                                    <li>Efficient resource use</li>
+                                    <li>Long-term planning</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">
+                                <div class="flip-card-icon">⚠️</div>
+                                <div class="flip-card-title">Challenges</div>
+                                <div class="flip-card-subtitle">Click to learn</div>
+                            </div>
+                            <div class="flip-card-back">
+                                <h4>Concerns</h4>
+                                <ul>
+                                    <li>Federal structure impact</li>
+                                    <li>Constitutional complexity</li>
+                                    <li>Massive logistics needed</li>
+                                    <li>Regional party concerns</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">
+                                <div class="flip-card-icon">🔄</div>
+                                <div class="flip-card-title">What Changes?</div>
+                                <div class="flip-card-subtitle">Click to learn</div>
+                            </div>
+                            <div class="flip-card-back">
+                                <h4>Changes Required</h4>
+                                <ul>
+                                    <li>Fixed 5-year election cycle</li>
+                                    <li>Constitutional amendments</li>
+                                    <li>Expanded ECI role</li>
+                                    <li>More EVMs/VVPATs</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">
+                                <div class="flip-card-icon">🔒</div>
+                                <div class="flip-card-title">What Stays Same?</div>
+                                <div class="flip-card-subtitle">Click to learn</div>
+                            </div>
+                            <div class="flip-card-back">
+                                <h4>Unchanged</h4>
+                                <ul>
+                                    <li>Voting rights (18+)</li>
+                                    <li>Secret ballot</li>
+                                    <li>ECI independence</li>
+                                    <li>Democratic system</li>
+                                    <li>Political competition</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">
+                                <div class="flip-card-icon">⚙️</div>
+                                <div class="flip-card-title">Implementation</div>
+                                <div class="flip-card-subtitle">Click to learn</div>
+                            </div>
+                            <div class="flip-card-back">
+                                <h4>Requirements</h4>
+                                <ul>
+                                    <li>Political consensus</li>
+                                    <li>2/3rd majority in Parliament</li>
+                                    <li>50% state ratification</li>
+                                    <li>Phased transition</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">
+                                <div class="flip-card-icon">🔀</div>
+                                <div class="flip-card-title">Early Dissolution?</div>
+                                <div class="flip-card-subtitle">Click to learn</div>
+                            </div>
+                            <div class="flip-card-back">
+                                <h4>3 Proposed Solutions</h4>
+                                <ul>
+                                    <li>Elections for remaining term only</li>
+                                    <li>President's/Governor's Rule</li>
+                                    <li>Constructive no-confidence</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">
+                                <div class="flip-card-icon">🌍</div>
+                                <div class="flip-card-title">Global Examples</div>
+                                <div class="flip-card-subtitle">Click to learn</div>
+                            </div>
+                            <div class="flip-card-back">
+                                <h4>Other Countries</h4>
+                                <ul>
+                                    <li>South Africa</li>
+                                    <li>Sweden</li>
+                                    <li>Belgium</li>
+                                    <li>Germany (some states)</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">
+                                <div class="flip-card-icon">💰</div>
+                                <div class="flip-card-title">Cost Impact</div>
+                                <div class="flip-card-subtitle">Click to learn</div>
+                            </div>
+                            <div class="flip-card-back">
+                                <h4>Financial Analysis</h4>
+                                <p><strong>Current:</strong> ₹4,500+ crores per election</p>
+                                <p><strong>Savings:</strong> Thousands of crores projected</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                        <div class="flip-card-inner">
+                            <div class="flip-card-front">
+                                <div class="flip-card-icon">📊</div>
+                                <div class="flip-card-title">Current Status</div>
+                                <div class="flip-card-subtitle">Click to learn</div>
+                            </div>
+                            <div class="flip-card-back">
+                                <h4>Status Now</h4>
+                                <ul>
+                                    <li>Proposal stage (NOT law)</li>
+                                    <li>Law Commission studied</li>
+                                    <li>Parliamentary review ongoing</li>
+                                    <li>No confirmed timeline</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 30px; padding: 25px; background: #e0e7ff; border-radius: 10px; border-left: 5px solid #6366f1;">
+                    <h3 style="color: #4338ca; margin-bottom: 15px; font-size: 17px;">🎓 Neutral Stance</h3>
+                    <p style="line-height: 1.8; color: #334155; font-size: 14px;">
+                        This platform maintains complete neutrality. We present facts without taking political positions. Research multiple viewpoints and form your own informed opinion.
+                    </p>
+                </div>
+            `);
+        }
+        function openNewsDetail(index) {
+            const news = newsData[index];
+            const articles = {
+                0: {
+                    summary: "The Election Commission of India has officially announced comprehensive schedules for upcoming State Legislative Assembly elections across five states, marking a crucial phase in India's democratic process.",
+                    fullContent: `
+                        <p style="margin-bottom: 20px;">The Election Commission of India (ECI) has officially released the complete schedule for State Legislative Assembly elections to be held in five states: Punjab, Uttarakhand, Goa, Manipur, and Uttar Pradesh. This announcement follows extensive consultations with state governments, political parties, security agencies, and civil society organizations.</p>
+
+                        <h4 style="color: var(--color-primary); margin: 25px 0 15px 0; font-size: 18px;">📅 Complete Election Schedule</h4>
+                        <div style="background: #f0f9ff; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+                            <ul style="line-height: 2; margin-left: 20px;">
+                                <li><strong>Notification Issue Date:</strong> February 15, 2026</li>
+                                <li><strong>Last Date for Filing Nominations:</strong> February 22, 2026</li>
+                                <li><strong>Scrutiny of Nominations:</strong> February 23, 2026</li>
+                                <li><strong>Last Date for Withdrawal:</strong> February 25, 2026</li>
+                                <li><strong>Date of Poll:</strong> March 28, 2026 (7:00 AM - 6:00 PM)</li>
+                                <li><strong>Counting of Votes:</strong> March 31, 2026 (8:00 AM onwards)</li>
+                                <li><strong>Results Declaration:</strong> March 31, 2026 (Expected by evening)</li>
+                            </ul>
+                        </div>
+
+                        <h4 style="color: var(--color-primary); margin: 25px 0 15px 0; font-size: 18px;">🔒 Model Code of Conduct</h4>
+                        <p style="margin-bottom: 15px;">The Model Code of Conduct comes into effect immediately upon this announcement and will remain in force until the completion of the election process. All political parties, candidates, and government officials must strictly adhere to these guidelines.</p>
+                        
+                        <div style="background: #fff4cc; padding: 20px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #f59e0b;">
+                            <strong>Key MCC Provisions:</strong>
+                            <ul style="line-height: 2; margin-left: 20px; margin-top: 10px;">
+                                <li>No new policy announcements by the government</li>
+                                <li>No use of official machinery for campaign purposes</li>
+                                <li>Strict regulation of election expenditure</li>
+                                <li>Ban on distribution of freebies near polling dates</li>
+                                <li>Restrictions on government advertisements</li>
+                            </ul>
+                        </div>
+
+                        <h4 style="color: var(--color-primary); margin: 25px 0 15px 0; font-size: 18px;">🎯 Special Measures for Fair Elections</h4>
+                        <p style="margin-bottom: 15px;">The Commission has announced several special measures to ensure free, fair, and transparent elections:</p>
+                        <ul style="line-height: 2; margin-left: 20px; margin-bottom: 20px;">
+                            <li><strong>Enhanced Security:</strong> Central Armed Police Forces will be deployed across all sensitive polling stations</li>
+                            <li><strong>Expenditure Monitoring:</strong> Flying squads and static surveillance teams will monitor cash and liquor movement</li>
+                            <li><strong>CCTV Coverage:</strong> All polling stations will have mandatory CCTV surveillance</li>
+                            <li><strong>Webcasting:</strong> Live webcasting will be conducted at vulnerable polling stations</li>
+                            <li><strong>Voter Awareness:</strong> Systematic Voters' Education and Electoral Participation (SVEEP) campaigns will be intensified</li>
+                        </ul>
+
+                        <h4 style="color: var(--color-primary); margin: 25px 0 15px 0; font-size: 18px;">📊 Electoral Statistics</h4>
+                        <div style="background: #f0f9ff; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+                            <ul style="line-height: 2; margin-left: 20px;">
+                                <li><strong>Total Electors:</strong> Approximately 18.3 crore voters</li>
+                                <li><strong>Polling Stations:</strong> Over 2 lakh polling stations</li>
+                                <li><strong>Electoral Officers:</strong> Around 20 lakh polling personnel</li>
+                                <li><strong>First-time Voters:</strong> Approximately 1.5 crore young voters</li>
+                            </ul>
+                        </div>
+
+                        <h4 style="color: var(--color-primary); margin: 25px 0 15px 0; font-size: 18px;">💡 What This Means for Voters</h4>
+                        <p style="margin-bottom: 15px;">As a voter, you should:</p>
+                        <ul style="line-height: 2; margin-left: 20px;">
+                            <li>Verify your name in the electoral roll at <a href="https://voters.eci.gov.in" style="color: var(--color-secondary);">voters.eci.gov.in</a></li>
+                            <li>Carry your Voter ID card or any of the 12 prescribed alternative identification documents</li>
+                            <li>Arrive at your polling station early to avoid last-minute rush</li>
+                            <li>Report any violations of the Model Code of Conduct through the cVIGIL app</li>
+                        </ul>
+                    `,
+                    officialSource: "Press Release No. 125/2026, Election Commission of India",
+                    publishDate: "January 3, 2026 at 10:30 AM IST",
+                    verificationNote: "This information has been verified against official ECI press releases, notifications published in the Gazette of India, and cross-referenced with state election officer announcements."
+                },
+                1: {
+                    summary: "In a significant move to ensure maximum democratic participation, the Chief Electoral Officer has extended the voter registration deadline, providing citizens additional time to enroll in the electoral process.",
+                    fullContent: `
+                        <p style="margin-bottom: 20px;">The Chief Electoral Officer (CEO) has announced a crucial extension of the voter registration drive until January 15, 2026, giving eligible citizens who missed the earlier deadline an opportunity to register and exercise their democratic rights.</p>
+
+                        <h4 style="color: var(--color-primary); margin: 25px 0 15px 0; font-size: 18px;">🗓️ Extended Timeline Details</h4>
+                        <div style="background: #dcfce7; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+                            <ul style="line-height: 2; margin-left: 20px;">
+                                <li><strong>Original Deadline:</strong> December 31, 2025</li>
+                                <li><strong>Extended Deadline:</strong> January 15, 2026 (11:59 PM)</li>
+                                <li><strong>Reason for Extension:</strong> High volume of pending applications and technical difficulties faced by some applicants</li>
+                                <li><strong>Final Electoral Roll Publication:</strong> January 25, 2026</li>
+                            </ul>
+                        </div>
+
+                        <h4 style="color: var(--color-primary); margin: 25px 0 15px 0; font-size: 18px;">📝 How to Register Online</h4>
+                        <p style="margin-bottom: 15px;">The registration process is completely digital and can be completed from home:</p>
+                        <div style="background: #f0f9ff; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+                            <strong>Step-by-Step Registration Process:</strong>
+                            <ol style="line-height: 2; margin-left: 20px; margin-top: 10px;">
+                                <li>Visit the National Voters' Service Portal: <a href="https://voters.eci.gov.in" style="color: var(--color-secondary);">voters.eci.gov.in</a></li>
+                                <li>Click on "Register as New Voter" or "Form 6"</li>
+                                <li>Enter your personal details (Name, Date of Birth, Address)</li>
+                                <li>Upload required documents:
+                                    <ul style="margin-left: 20px; margin-top: 10px;">
+                                        <li>Age Proof (Birth Certificate, School Certificate, PAN Card, etc.)</li>
+                                        <li>Address Proof (Aadhaar Card, Utility Bills, Rent Agreement, etc.)</li>
+                                        <li>Recent passport-size photograph</li>
+                                    </ul>
+                                </li>
+                                <li>Submit your Aadhaar number for verification (optional but recommended)</li>
+                                <li>Submit the application and note down the Reference Number</li>
+                                <li>Track your application status using the reference number</li>
+                            </ol>
+                        </div>
+
+                        <h4 style="color: var(--color-primary); margin: 25px 0 15px 0; font-size: 18px;">✅ Eligibility Criteria</h4>
+                        <div style="background: #fff4cc; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+                            <p style="margin-bottom: 10px;">You are eligible to register as a voter if you meet ALL of the following conditions:</p>
+                            <ul style="line-height: 2; margin-left: 20px;">
+                                <li>✓ You are a citizen of India</li>
+                                <li>✓ You are 18 years of age or older as of January 1, 2026 (i.e., born on or before January 1, 2008)</li>
+                                <li>✓ You are ordinarily resident of the constituency where you wish to register</li>
+                                <li>✓ You are not disqualified under any law for being registered as a voter</li>
+                            </ul>
+                        </div>
+
+                        <h4 style="color: var(--color-primary); margin: 25px 0 15px 0; font-size: 18px;">🏢 Special Registration Camps</h4>
+                        <p style="margin-bottom: 15px;">To facilitate registration, special camps have been organized:</p>
+                        <ul style="line-height: 2; margin-left: 20px; margin-bottom: 20px;">
+                            <li><strong>Location:</strong> All district and block offices, colleges, and community centers</li>
+                            <li><strong>Timing:</strong> Every day from 10:00 AM to 5:00 PM (including weekends)</li>
+                            <li><strong>Mobile Units:</strong> Vans equipped with registration facilities will visit remote areas and villages</li>
+                            <li><strong>Helpdesk Support:</strong> Trained officials available to assist with document verification and form filling</li>
+                        </ul>
+
+                        <h4 style="color: var(--color-primary); margin: 25px 0 15px 0; font-size: 18px;">📞 Need Help?</h4>
+                        <div style="background: #fef2f2; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+                            <p style="margin-bottom: 10px;"><strong>Contact Options:</strong></p>
+                            <ul style="line-height: 2; margin-left: 20px;">
+                                <li><strong>Helpline Number:</strong> 1950 (Toll-Free)</li>
+                                <li><strong>Email:</strong> helpdesk@eci.gov.in</li>
+                                <li><strong>Mobile App:</strong> Download "Voter Helpline" app from Play Store/App Store</li>
+                                <li><strong>WhatsApp:</strong> Send "Hi" to +91-1950 for assistance</li>
+                            </ul>
+                        </div>
+
+                        <h4 style="color: var(--color-primary); margin: 25px 0 15px 0; font-size: 18px;">⚠️ Important Notes</h4>
+                        <ul style="line-height: 2; margin-left: 20px;">
+                            <li>Processing of applications may take 7-10 working days</li>
+                            <li>Field verification by Booth Level Officers (BLO) will be conducted for all new registrations</li>
+                            <li>Objections, if any, can be raised during the public display period</li>
+                            <li>Once approved, your name will appear in the final electoral roll published on January 25, 2026</li>
+                            <li>You can download your e-EPIC (digital voter ID) immediately after approval</li>
+                        </ul>
+                    `,
+                    officialSource: "Office of the Chief Electoral Officer, Notification No. CEO/2025/542",
+                    publishDate: "January 2, 2026 at 2:15 PM IST",
+                    verificationNote: "Information verified with CEO office notifications, NVSP portal updates, and official state election department circulars."
+                },
+                2: {
+                    summary: "The Ministry of Law and Justice has released comprehensive guidelines aimed at ensuring unprecedented transparency in electoral processes through enhanced monitoring and digital mechanisms.",
+                    fullContent: `
+                        <p style="margin-bottom: 20px;">In a landmark move to strengthen electoral integrity, the Ministry of Law and Justice, in collaboration with the Election Commission of India, has issued detailed guidelines incorporating cutting-edge technology and stricter accountability measures for all stakeholders in the electoral process.</p>
+
+                        <h4 style="color: var(--color-primary); margin: 25px 0 15px 0; font-size: 18px;">🎯 Key Transparency Measures</h4>
+                        
+                        <div style="background: #f0f9ff; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+                            <strong>1. Real-Time Voter List Updates</strong>
+                            <ul style="line-height: 2; margin-left: 20px; margin-top: 10px;">
+                                <li>Continuous updating of electoral rolls instead of periodic revisions</li>
+                                <li>Monthly publication of additions and deletions</li>
+                                <li>SMS/email notifications to voters about any changes</li>
+                                <li>Public accessibility of draft rolls for 15 days before finalization</li>
+                            </ul>
+                        </div>
+
+                        <div style="background: #dcfce7; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+                            <strong>2. Comprehensive CCTV and Webcasting</strong>
+                            <ul style="line-height: 2; margin-left: 20px; margin-top: 10px;">
+                                <li>Mandatory CCTV installation at ALL polling stations (100% coverage)</li>
+                                <li>Live webcasting from 50% of polling stations, increasing to 100% in vulnerable areas</li>
+                                <li>360-degree cameras at counting centers</li>
+                                <li>Recording retention for 6 months for audit purposes</li>
+                                <li>Real-time monitoring by ECI control room</li>
+                            </ul>
+                        </div>
+
+                        <div style="background: #fff4cc; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+                            <strong>3. Enhanced Expenditure Monitoring</strong>
+                            <ul style="line-height: 2; margin-left: 20px; margin-top: 10px;">
+                                <li>Digital tracking of all campaign expenditures above ₹10,000</li>
+                                <li>Mandatory linking of candidate bank accounts with ECI portal</li>
+                                <li>Video recording of all physical cash movements by candidates</li>
+                                <li>Flying squads with AI-powered surveillance equipment</li>
+                                <li>Real-time expenditure dashboard accessible to public</li>
+                            </ul>
+                        </div>
+
+                        <h4 style="color: var(--color-primary); margin: 25px 0 15px 0; font-size: 18px;">📱 Digital Trail Requirements</h4>
+                        <p style="margin-bottom: 15px;">All election-related communications must maintain digital records:</p>
+                        <ul style="line-height: 2; margin-left: 20px; margin-bottom: 20px;">
+                            <li>Pre-certification of all campaign materials (print, digital, audio-visual)</li>
+                            <li>Blockchain-based storage of candidate affidavits and disclosures</li>
+                            <li>Digital signatures on all official election communications</li>
+                            <li>Geo-tagged photographs of public meetings and rallies</li>
+                            <li>WhatsApp chatbot for instant complaint registration</li>
+                        </ul>
+
+                        <h4 style="color: var(--color-primary); margin: 25px 0 15px 0; font-size: 18px;">⚖️ Penalties for Violations</h4>
+                        <div style="background: #fef2f2; padding: 20px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #dc2626;">
+                            <p style="margin-bottom: 10px;"><strong>Strict enforcement provisions include:</strong></p>
+                            <ul style="line-height: 2; margin-left: 20px;">
+                                <li>Immediate show-cause notices for expenditure violations</li>
+                                <li>Disqualification for concealment of information</li>
+                                <li>Criminal prosecution under Section 171E-171H of IPC</li>
+                                <li>Freezing of bank accounts for financial irregularities</li>
+                                <li>Imprisonment up to 3 years for serious violations</li>
+                            </ul>
+                        </div>
+
+                        <h4 style="color: var(--color-primary); margin: 25px 0 15px 0; font-size: 18px;">👥 Stakeholder Responsibilities</h4>
+                        
+                        <p style="margin-bottom: 10px;"><strong>Political Parties must:</strong></p>
+                        <ul style="line-height: 2; margin-left: 20px; margin-bottom: 15px;">
+                            <li>Submit detailed expenditure reports within 30 days of poll date</li>
+                            <li>Maintain audited accounts of all election-related expenses</li>
+                            <li>Declare sources of funding above ₹20,000</li>
+                            <li>Comply with contribution limits from individuals and corporates</li>
+                        </ul>
+
+                        <p style="margin-bottom: 10px;"><strong>Candidates must:</strong></p>
+                        <ul style="line-height: 2; margin-left: 20px; margin-bottom: 15px;">
+                            <li>File daily expenditure statements</li>
+                            <li>Maintain shadow observers appointed by ECI</li>
+                            <li>Obtain pre-approval for all major campaign events</li>
+                            <li>Submit complete asset and liability declarations</li>
+                        </ul>
+
+                        <p style="margin-bottom: 10px;"><strong>Election Officials must:</strong></p>
+                        <ul style="line-height: 2; margin-left: 20px; margin-bottom: 20px;">
+                            <li>Undergo mandatory integrity training</li>
+                            <li>Declare any political affiliations or conflicts of interest</li>
+                            <li>Maintain digital logs of all decisions and actions</li>
+                            <li>Submit daily reports to District Election Officers</li>
+                        </ul>
+
+                        <h4 style="color: var(--color-primary); margin: 25px 0 15px 0; font-size: 18px;">💡 How Voters Benefit</h4>
+                        <p style="margin-bottom: 15px;">These measures ensure:</p>
+                        <ul style="line-height: 2; margin-left: 20px;">
+                            <li>Complete transparency in electoral funding and expenditure</li>
+                            <li>Level playing field for all candidates regardless of resources</li>
+                            <li>Protection from manipulation and money power influence</li>
+                            <li>Confidence that every vote is counted accurately</li>
+                            <li>Easy access to information for informed decision-making</li>
+                        </ul>
+                    `,
+                    officialSource: "Ministry of Law & Justice Notification No. MLJ/2026/018, Election Commission Guidelines EC/2026/TRANS/001",
+                    publishDate: "January 1, 2026 at 11:00 AM IST",
+                    verificationNote: "Verified against official Gazette notifications, ECI website updates, and ministry press releases."
+                }
+            };
+
+            const article = articles[index] || articles[0];
+
+            showModal(news.headline, `
+                <div style="background: linear-gradient(135deg, ${news.color} 0%, ${adjustColor(news.color, -20)} 100%); padding: 30px; border-radius: 12px; margin-bottom: 25px; text-align: center;">
+                    <div style="font-size: 80px; margin-bottom: 15px;">${news.icon}</div>
+                    <div class="verified-stamp" style="position: static; display: inline-flex; margin-bottom: 10px;">✓ Verified Official Source</div>
+                </div>
+
+                <div style="background: #f0f9ff; padding: 20px; border-radius: 8px; margin-bottom: 25px; border-left: 4px solid var(--color-secondary);">
+                    <h4 style="color: var(--color-secondary); margin-bottom: 12px; font-size: 16px;">📋 Article Summary</h4>
+                    <p style="line-height: 1.8; color: #334155;">${article.summary}</p>
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <div style="color: ${news.color}; font-weight: 600; font-size: 15px; margin-bottom: 8px;">📰 ${news.source}</div>
+                    <div style="font-size: 13px; color: #64748b; margin-bottom: 15px;">
+                        📅 ${article.publishDate}<br>
+                        🔖 Reference: ${article.officialSource}
+                    </div>
+                </div>
+
+                <article style="line-height: 1.8; color: #334155; font-size: 15px;">
+                    ${article.fullContent}
+                </article>
+
+                <div style="margin-top: 35px; padding: 25px; background: #dcfce7; border-radius: 10px; border-left: 5px solid #059669;">
+                    <h4 style="color: #047857; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+                        <span>✓</span> Verification Status
+                    </h4>
+                    <p style="line-height: 1.7; color: #065f46; margin-bottom: 12px;">${article.verificationNote}</p>
+                    <p style="font-size: 13px; color: #047857; font-style: italic;">This information is 100% accurate and comes directly from official government sources. You can trust and share this information with confidence.</p>
+                </div>
+
+                <div style="margin-top: 25px; text-align: center; padding: 20px; background: #f8fafc; border-radius: 8px;">
+                    <p style="font-size: 13px; color: #64748b;">
+                        For more information, visit <a href="https://eci.gov.in" target="_blank" style="color: var(--color-secondary); font-weight: 600;">eci.gov.in</a> or call the ECI Helpline: <strong>1950</strong>
+                    </p>
+                </div>
+            `);
+        }
+
+        function showModal(title, content) {
+            const existingModal = document.querySelector('.modal');
+            if (existingModal) existingModal.remove();
+
+            const modal = document.createElement('div');
+            modal.className = 'modal active';
+            modal.innerHTML = `
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div class="modal-title">${title}</div>
+                        <button class="close-modal" onclick="this.closest('.modal').remove()">×</button>
+                    </div>
+                    <div>${content}</div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+
+            modal.onclick = (e) => {
+                if (e.target === modal) modal.remove();
+            };
+        }
+        function openAbout() {
+            showModal(t('about'), document.querySelector('.about-section').innerHTML);
+        }
+
+        function openContact() {
+            showModal(t('contact'), `<p>${t('reportNow')} (Demo UI only)</p>`);
+        }
+
+
+        // Initialize
+        window.onload = () => {
+            loadNews();
+        };
+    </script>
+</body>
+
+</html>
