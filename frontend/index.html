@@ -753,8 +753,10 @@
                     </div>
                 </div>
                 <div class="card-actions">
-                    <button class="card-btn" onclick="scrollToNews()" data-en="View News" data-hi="समाचार देखें">View
-                        News</button>
+                    <button class="card-btn" onclick="scrollToNews()"
+                        aria-label="Read latest verified election news updates" data-en="Read Latest Updates"
+                        data-hi="नवीनतम अपडेट पढ़ें">Read
+                        Latest Updates</button>
                 </div>
             </div>
 
@@ -773,8 +775,8 @@
                     </div>
                 </div>
                 <div class="card-actions">
-                    <button class="card-btn" onclick="openImageUpload()" data-en="Upload Image"
-                        data-hi="छवि अपलोड करें">Upload Image</button>
+                    <button class="card-btn" onclick="openImageUpload()" aria-label="Verify election-related image"
+                        data-en="Verify Image" data-hi="छवि सत्यापित करें">Verify Image</button>
                 </div>
             </div>
 
@@ -792,8 +794,9 @@
                     </div>
                 </div>
                 <div class="card-actions">
-                    <button class="card-btn" onclick="openVoiceInput()" data-en="Start Recording"
-                        data-hi="रिकॉर्डिंग शुरू करें">Start Recording</button>
+                    <button class="card-btn" onclick="openVoiceInput()"
+                        aria-label="Check audio for election misinformation" data-en="Check Audio"
+                        data-hi="ऑडियो जांचें">Check Audio</button>
                 </div>
             </div>
 
@@ -830,29 +833,41 @@
                     </div>
                 </div>
                 <div class="card-actions">
-                    <button class="card-btn" onclick="openContact()" data-en="Report Now"
-                        data-hi="अभी रिपोर्ट करें">Report Now</button>
+                    <button class="card-btn" onclick="openContact()" aria-label="Report election misinformation to ECI"
+                        data-en="Report to ECI" data-hi="ईसीआई को रिपोर्ट करें">Report to ECI</button>
                 </div>
             </div>
 
-            <!-- Download Electoral Roll Card -->
+            <!-- Check Voter Status Card -->
             <div class="service-card" style="background: var(--color-yellow);">
                 <div class="card-header">
-                    <div class="card-icon" style="background: #ffd966;">📥</div>
+                    <div class="card-icon" style="background: #ffd966;" aria-hidden="true">📋</div>
                     <div class="card-content">
-                        <div class="card-title" data-en="Search Your Name in Voter List"
-                            data-hi="मतदाता सूची में अपना नाम खोजें">Search Your Name in Voter List</div>
+                        <div class="card-title" data-en="Check Voter Status" data-hi="मतदाता स्थिति की जाँच करें">Check
+                            Voter Status</div>
                         <div class="card-description"
-                            data-en="Verify your voter registration status and download your voter ID card."
-                            data-hi="अपनी मतदाता पंजीकरण स्थिति सत्यापित करें और अपना मतदाता पहचान पत्र डाउनलोड करें।">
-                            Verify your voter registration status and download your voter ID card.</div>
+                            data-en="Step-by-step guide to finding your name in the official Electoral Roll on the ECI portal."
+                            data-hi="ईसीआई पोर्टल पर आधिकारिक मतदाता सूची में अपना नाम खोजने के लिए चरण-दर-चरण मार्गदर्शिका।">
+                            Step-by-step guide to finding your name in the official Electoral Roll on the ECI portal.
+                        </div>
                     </div>
                 </div>
                 <div class="card-actions">
-                    <button class="card-btn secondary" data-en="Coming Soon" data-hi="जल्द ही आ रहा है">Coming
-                        Soon</button>
+                    <button class="card-btn" onclick="openVoterGuide()"
+                        aria-label="Open step-by-step guide to check voter status" data-en="Check Status"
+                        data-hi="स्थिति की जाँच करें">Check
+                        Status</button>
                 </div>
             </div>
+        </div>
+
+        <!-- Disclaimer -->
+        <div
+            style="margin-top: -15px; margin-bottom: 40px; padding: 15px; background: rgba(0,0,0,0.03); border-radius: 8px; font-size: 13px; color: var(--color-text-light); text-align: center;">
+            <p data-en="Note: This is an educational platform. For official services, we guide you to eci.gov.in."
+                data-hi="नोट: यह एक शैक्षिक मंच है। आधिकारिक सेवाओं के लिए, हम आपको eci.gov.in पर निर्देशित करते हैं।">
+                Note: This is an educational platform. For official services, we guide you to eci.gov.in.
+            </p>
         </div>
 
         <!-- News Section -->
@@ -1081,7 +1096,10 @@
                 imageVerification: "Image Verification",
                 voiceVerification: "Voice Verification",
                 about: "About",
-                contact: "Contact Us"
+                about: "About",
+                contact: "Contact Us",
+                voterGuideTitle: "How to Check Your Name",
+                visitPortal: "Visit Official Portal"
             },
             hi: {
                 verified: "सत्यापित",
@@ -1104,7 +1122,9 @@
                 imageVerification: "छवि सत्यापन",
                 voiceVerification: "आवाज़ सत्यापन",
                 about: "परिचय",
-                contact: "संपर्क करें"
+                contact: "संपर्क करें",
+                voterGuideTitle: "मतदाता सूची में नाम कैसे खोजें",
+                visitPortal: "आधिकारिक पोर्टल पर जाएं"
             }
         };
 
@@ -1714,6 +1734,49 @@ function renderImageResult(data) {
             showModal(t('contact'), `<p>${t('reportNow')} (Demo UI only)</p>`);
         }
 
+
+        function openVoterGuide() {
+            showModal(t('voterGuideTitle'), `
+                <div style="text-align: left; padding: 10px;">
+                    <div style="background: #eff6ff; padding: 20px; border-radius: 8px; border-left: 4px solid #3b82f6; margin-bottom: 25px;">
+                        <h4 style="color: #1e40af; margin-bottom: 12px; font-size: 16px;">✅ Before You Start (Checklist)</h4>
+                        <ul style="list-style: none; padding: 0; font-size: 14px; color: #1e3a8a;">
+                            <li style="margin-bottom: 8px; display: flex; align-items: start; gap: 10px;">
+                                <span style="color: #3b82f6; font-weight: bold;">•</span> 
+                                <span>Your Name, Date of Birth, and State <strong>OR</strong></span>
+                            </li>
+                            <li style="display: flex; align-items: start; gap: 10px;">
+                                <span style="color: #3b82f6; font-weight: bold;">•</span> 
+                                <span>Your Voter ID Number (EPIC No.)</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <h4 style="margin-bottom: 15px; color: var(--color-text); font-size: 16px; font-weight: 700;">Step-by-Step Guide:</h4>
+                    <ol style="padding-left: 20px; margin-bottom: 30px; line-height: 1.8; color: var(--color-text); font-size: 14px;">
+                        <li style="margin-bottom: 10px;">Click the button below to visit the <strong>official National Voters' Service Portal</strong>.</li>
+                        <li style="margin-bottom: 10px;">Choose <strong>"Search in Electoral Roll"</strong>.</li>
+                        <li style="margin-bottom: 10px;">Select <strong>"Search by Details"</strong> (enter name/age/state) OR <strong>"Search by EPIC"</strong> (enter Voter ID).</li>
+                        <li style="margin-bottom: 10px;">Enter the <strong>CAPTCHA code</strong> shown on screen.</li>
+                        <li>Click <strong>"Search"</strong> to see your polling booth and details.</li>
+                    </ol>
+
+                    <div style="background: #fef2f2; padding: 15px; border-radius: 8px; border: 1px solid #fee2e2; margin-bottom: 30px; display: flex; gap: 12px; align-items: start;">
+                        <span style="font-size: 20px;">🔒</span>
+                        <div>
+                            <strong style="color: #991b1b; display: block; margin-bottom: 4px; font-size: 14px;">Safety Notice</strong>
+                            <p style="font-size: 13px; color: #b91c1c; margin: 0; line-height: 1.5;">Ensure the website address is always <strong>voters.eci.gov.in</strong>. We do not ask for or store your personal details.</p>
+                        </div>
+                    </div>
+
+                    <div style="text-align: center;">
+                        <a href="https://voters.eci.gov.in" target="_blank" rel="noopener noreferrer" class="card-btn" style="text-decoration: none; padding: 12px 30px; font-size: 15px; background: #059669; display: inline-block;" onclick="document.querySelector('.modal.active').classList.remove('active');">
+                            ${t('visitPortal')}
+                        </a>
+                    </div>
+                </div>
+            `);
+        }
 
         // Initialize
        // window.onload = () => {
