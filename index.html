@@ -1947,30 +1947,17 @@ async function verifyVoiceText(text) {
           //  loadNews();
        // };
 
-       function showTab(tab) {
-    // Hide all sections
-    document.querySelectorAll('.tab-section').forEach(s => {
-        s.classList.remove('active');
-    });
+       function scrollToNews() {
+    // Switch to News tab
+    showTab('news');
 
-    // Remove active nav state
-    document.querySelectorAll('.nav-item').forEach(n => {
-        n.classList.remove('active');
-    });
-
-    // Show selected tab
-    if (tab === 'services') {
-        document.getElementById('servicesTab').classList.add('active');
-    } else if (tab === 'news') {
-        document.getElementById('newsTab').classList.add('active');
-        loadVerifiedNews();
-    } else if (tab === 'verify') {
-        document.getElementById('verifyTab').classList.add('active');
-    } else if (tab === 'education') {
-        document.getElementById('educationTab').classList.add('active');
-    }
-
-    event.target.classList.add('active');
+    // Small delay to allow tab to render
+    setTimeout(() => {
+        const section = document.getElementById('newsSection');
+        if (section) {
+            section.scrollIntoView({ behavior: 'smooth' });
+        }
+    }, 100);
 }
 
        async function loadVerifiedNews() {
