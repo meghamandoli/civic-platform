@@ -708,7 +708,33 @@
     </nav>
 
     <!-- Main Container -->
-    <div class="container">
+    <div class="container"><!-- AI Fake News Text Verification -->
+<div class="section-header">
+    VERIFY NEWS TEXT (AI)
+</div>
+
+<div style="background:white;padding:25px;border-radius:10px;margin-bottom:40px;">
+    <p style="font-size:14px;color:#555;margin-bottom:12px;">
+        Paste any news, message, or claim to verify whether it may be fake or real.
+    </p>
+
+    <textarea
+        id="newsInput"
+        placeholder="Paste news text here..."
+        style="width:100%;height:140px;padding:14px;border-radius:8px;border:1px solid #ccc;font-size:14px;">
+    </textarea>
+
+    <button
+        class="card-btn"
+        style="margin-top:15px;"
+        onclick="verifyText()">
+        Verify Text
+    </button>
+
+    <div id="textResult" style="margin-top:20px;"></div>
+</div>
+
+
         <!-- Services Section -->
         <div class="section-header" data-en="SERVICES" data-hi="सेवाएं">SERVICES</div>
 
@@ -1135,23 +1161,6 @@
         ];
 
         // Load news
-        function loadNews() {
-            const grid = document.getElementById('newsGrid');
-            grid.innerHTML = newsData.map((news, i) => `
-                <div class="news-card animate-in" style="animation-delay: ${i * 0.1}s;" onclick="openNewsDetail(${i})">
-                    <div class="news-banner" style="background: linear-gradient(135deg, ${news.color} 0%, ${adjustColor(news.color, -20)} 100%);">
-                        <span>${news.icon}</span>
-                       <div class="verified-stamp">✓ ${t('verified')}</div>
-
-                    </div>
-                    <div class="news-body">
-                        <div class="news-source">${news.source}</div>
-                        <div class="news-title">${news.headline}</div>
-                        <div class="news-meta">📅 ${news.time}</div>
-                    </div>
-                </div>
-            `).join('');
-        }
 
         function adjustColor(color, percent) {
             const num = parseInt(color.replace("#", ""), 16);
@@ -1178,7 +1187,6 @@
             });
 
             // Re-render dynamic sections
-            loadNews();
 
             // Close open modal to prevent language mismatch
             const modal = document.querySelector('.modal.active');
@@ -1199,219 +1207,88 @@
             `);
         }
 
-        function handleImageUpload(input) {
-            if (input.files && input.files[0]) {
-                const resultDiv = document.getElementById('verifyResult');
-                const reader = new FileReader();
+async function handleImageUpload(input) {
+    if (!input.files || !input.files[0]) return;
 
-                reader.onload = function (e) {
-                    resultDiv.innerHTML = `
-                        <div style="text-align: center; padding: 40px;">
-                            <div style="font-size: 50px; margin-bottom: 15px;">⏳</div>
-                          <p style="font-weight: 600; margin-bottom: 10px;">${t('processing')}</p>
-                          <p style="font-size: 14px; color: #64748b;">${t('ocrExtract')}</p>
+    const resultDiv = document.getElementById('verifyResult');
+    const formData = new FormData();
+    formData.append("file", input.files[0]);
 
-                        </div>
-                    `;
+    resultDiv.innerHTML = `
+        <div style="text-align:center;padding:30px;">
+            <div style="font-size:40px;">⏳</div>
+            <p style="font-weight:600;margin-top:10px;">Processing image...</p>
+        </div>
+    `;
 
-                    setTimeout(() => {
-                        resultDiv.innerHTML = `
-                            <div style="margin-top: 30px;">
-                                <img src="${e.target.result}" style="max-width: 100%; max-height: 300px; border-radius: 10px; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
-                            </div>
-                            <div style="text-align: center; padding: 20px;">
-                                <div style="font-size: 40px; margin-bottom: 10px;">🔍</div>
-                              <p style="font-weight: 600;">${t('analyzing')}</p>
+    try {
+        const res = await fetch("http://127.0.0.1:8000/upload-image", {
+            method: "POST",
+            body: formData
+        });
 
-                            </div>
-                        `;
+        const data = await res.json();
+        renderImageResult(data);
 
-                        setTimeout(() => {
-                            resultDiv.innerHTML = `
-                                <div style="margin-top: 25px; padding: 25px; background: #f0f9ff; border-radius: 10px; border-left: 5px solid #0284c7;">
-                                    <h4 style="color: #0369a1; margin-bottom: 18px; font-size: 17px; display: flex; align-items: center; gap: 8px;">
-                                        <span>📄</span> Extracted Text from Image
-                                    </h4>
-                                    <div style="background: white; padding: 20px; border-radius: 8px; line-height: 1.8; border: 1px solid #e0e7ff;">
-                                        <p style="margin-bottom: 15px; font-style: italic; color: #64748b; font-size: 14px;">[OCR Detection - Image to Text Conversion]</p>
-                                        <p style="font-size: 15px; color: #1e293b;">
-                                            <strong>"IMPORTANT ANNOUNCEMENT</strong><br><br>
-                                            Voter Registration Extended!<br><br>
-                                            The Election Commission has extended the voter registration deadline to <strong>January 15, 2026</strong>.<br><br>
-                                            ✓ Register online at voters.eci.gov.in<br>
-                                            ✓ All citizens above 18 years can register<br>
-                                            ✓ Aadhaar card required for verification<br>
-                                            ✓ Download your e-EPIC after registration<br><br>
-                                            <em style="color: #dc2626;">Last date: 15th January 2026</em><br>
-                                            Don't miss your chance to vote!"
-                                        </p>
-                                    </div>
-                                </div>
+    } catch (err) {
+        resultDiv.innerHTML = `<p style="color:red;">Server error</p>`;
+    }
+}
 
-                                <div style="margin-top: 25px; padding: 25px; background: linear-gradient(135deg, #dcfce7 0%, #d1fae5 100%); border-radius: 10px; text-align: center; border: 2px solid #059669;">
-                                   <div style="font-size: 14px; color: #15803d; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px;">
-  ${t('credibilityScore')}
-</div>
-<div style="font-size: 48px; font-weight: 800; color: #059669; margin-bottom: 8px;">
-  ${t('high')}
-</div>
+function renderImageResult(data) {
+    const resultDiv = document.getElementById('verifyResult');
 
-                                    <div style="font-size: 32px; font-weight: 700; color: #16a34a; margin-bottom: 15px;">92%</div>
-                                    <p style="font-size: 14px; color: #166534; line-height: 1.6;">Based on verification with 4 official government sources and cross-referencing with Election Commission database</p>
-                                </div>
+    let badgeColor = "#64748b";
+    let badgeText = "UNCERTAIN";
 
-                                <div style="margin-top: 25px; padding: 25px; background: white; border-radius: 10px; border: 1px solid #e5e7eb;">
-                                    <h4 style="margin-bottom: 20px; font-size: 18px; color: var(--color-primary);">🔎 Detailed Claim Analysis</h4>
-                                    
-                                    <div style="margin-bottom: 20px; padding: 18px; background: #dcfce7; border-radius: 8px; border-left: 5px solid #059669;">
-                                        <div style="display: flex; align-items: start; gap: 12px; margin-bottom: 12px;">
-                                            <span style="font-size: 24px;">✅</span>
-                                            <div style="flex: 1;">
-                                                <strong style="color: #047857; display: block; margin-bottom: 8px; font-size: 15px;">CLAIM 1: "Voter Registration Extended to January 15, 2026"</strong>
-                                                <p style="color: #065f46; line-height: 1.7; font-size: 14px; margin-bottom: 10px;">
-                                                   <strong>Status:</strong> ✓ ${t('verifiedTrue')} (100% Accurate)
-<br>
-                                                    <strong>Evidence:</strong> The Election Commission of India has officially extended the voter registration deadline through Press Release No. CEO/2025/542 dated December 30, 2025. The new deadline is indeed January 15, 2026, at 11:59 PM.
-                                                </p>
-                                                <a href="https://eci.gov.in" style="color: #0284c7; font-size: 13px; text-decoration: none; font-weight: 600;">📎 View Official Press Release →</a>
-                                            </div>
-                                        </div>
-                                    </div>
+    if (data.verification_status === "LIKELY_FAKE") {
+        badgeColor = "#dc2626";   // red
+        badgeText = "LIKELY FAKE";
+    }
+    else if (data.verification_status === "LIKELY_TRUE") {
+        badgeColor = "#16a34a";   // green
+        badgeText = "LIKELY TRUE";
+    }
 
-                                    <div style="margin-bottom: 20px; padding: 18px; background: #dcfce7; border-radius: 8px; border-left: 5px solid #059669;">
-                                        <div style="display: flex; align-items: start; gap: 12px; margin-bottom: 12px;">
-                                            <span style="font-size: 24px;">✅</span>
-                                            <div style="flex: 1;">
-                                                <strong style="color: #047857; display: block; margin-bottom: 8px; font-size: 15px;">CLAIM 2: "Register online at voters.eci.gov.in"</strong>
-                                                <p style="color: #065f46; line-height: 1.7; font-size: 14px; margin-bottom: 10px;">
-                                                  <strong>Status:</strong> ✓ ${t('verifiedTrue')} (100% Accurate)
-<br>
-                                                    <strong>Evidence:</strong> voters.eci.gov.in is the official National Voters' Service Portal operated by the Election Commission of India. This is the correct and official website for voter registration using Form 6.
-                                                </p>
-                                                <a href="https://voters.eci.gov.in" style="color: #0284c7; font-size: 13px; text-decoration: none; font-weight: 600;">📎 Visit Official Portal →</a>
-                                            </div>
-                                        </div>
-                                    </div>
+    resultDiv.innerHTML = `
+        <div style="margin-top:20px;">
 
-                                    <div style="margin-bottom: 20px; padding: 18px; background: #dcfce7; border-radius: 8px; border-left: 5px solid #059669;">
-                                        <div style="display: flex; align-items: start; gap: 12px; margin-bottom: 12px;">
-                                            <span style="font-size: 24px;">✅</span>
-                                            <div style="flex: 1;">
-                                                <strong style="color: #047857; display: block; margin-bottom: 8px; font-size: 15px;">CLAIM 3: "All citizens above 18 years can register"</strong>
-                                                <p style="color: #065f46; line-height: 1.7; font-size: 14px; margin-bottom: 10px;">
-                                                   <strong>Status:</strong> ✓ ${t('verifiedTrue')} (100% Accurate)
-<br>
-                                                    <strong>Evidence:</strong> As per Article 326 of the Constitution of India, every citizen who is 18 years or older as of January 1, 2026 (born on or before January 1, 2008) is eligible to register as a voter, provided they are not disqualified under any law.
-                                                </p>
-                                                <a href="https://legislative.gov.in" style="color: #0284c7; font-size: 13px; text-decoration: none; font-weight: 600;">📎 View Constitutional Provision →</a>
-                                            </div>
-                                        </div>
-                                    </div>
+            <div style="
+                display:inline-block;
+                padding:8px 18px;
+                border-radius:999px;
+                font-weight:700;
+                font-size:13px;
+                color:white;
+                background:${badgeColor};
+                margin-bottom:15px;">
+                ${badgeText}
+            </div>
 
-                                    <div style="margin-bottom: 20px; padding: 18px; background: #fef3c7; border-radius: 8px; border-left: 5px solid #f59e0b;">
-                                        <div style="display: flex; align-items: start; gap: 12px; margin-bottom: 12px;">
-                                            <span style="font-size: 24px;">⚠️</span>
-                                            <div style="flex: 1;">
-                                                <strong style="color: #b45309; display: block; margin-bottom: 8px; font-size: 15px;">CLAIM 4: "Aadhaar card required for verification"</strong>
-                                                <p style="color: #92400e; line-height: 1.7; font-size: 14px; margin-bottom: 10px;">
-                                                    <strong>Status:</strong> ⚠️ ${t('partiallyAccurate')} (70% Correct)
-<br>
-                                                    <strong>Clarification:</strong> Aadhaar is NOT mandatory for voter registration. While linking Aadhaar speeds up the verification process and is highly recommended, voters can register using alternative documents like birth certificate, school certificate, or PAN card as age proof. The Supreme Court has ruled that Aadhaar cannot be made mandatory for voter registration.
-                                                </p>
-                                                <a href="https://eci.gov.in" style="color: #0284c7; font-size: 13px; text-decoration: none; font-weight: 600;">📎 View ECI Guidelines on Documents →</a>
-                                            </div>
-                                        </div>
-                                    </div>
+            <div style="margin-top:15px;">
+                <h4>🖼 Image Description</h4>
+                <p>${data.description || "—"}</p>
+            </div>
 
-                                    <div style="margin-bottom: 20px; padding: 18px; background: #dcfce7; border-radius: 8px; border-left: 5px solid #059669;">
-                                        <div style="display: flex; align-items: start; gap: 12px; margin-bottom: 12px;">
-                                            <span style="font-size: 24px;">✅</span>
-                                            <div style="flex: 1;">
-                                                <strong style="color: #047857; display: block; margin-bottom: 8px; font-size: 15px;">CLAIM 5: "Download your e-EPIC after registration"</strong>
-                                                <p style="color: #065f46; line-height: 1.7; font-size: 14px; margin-bottom: 10px;">
-                                                   <strong>Status:</strong> ✓ ${t('verifiedTrue')} (100% Accurate)
-<br>
-                                                    <strong>Evidence:</strong> After successful registration and verification by BLO (Booth Level Officer), voters can download their electronic Electoral Photo Identity Card (e-EPIC) from the NVSP portal or through the Voter Helpline mobile app. The e-EPIC is legally valid at all polling stations.
-                                                </p>
-                                                <a href="https://voters.eci.gov.in" style="color: #0284c7; font-size: 13px; text-decoration: none; font-weight: 600;">📎 Download e-EPIC →</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+            <div style="margin-top:15px;">
+                <h4>📄 Extracted Text (OCR)</h4>
+                <p style="font-style:italic;">${data.ocr_text || "No text detected"}</p>
+            </div>
 
-                                <div style="margin-top: 25px; padding: 25px; background: #eff6ff; border-radius: 10px; border-left: 5px solid #3b82f6;">
-                                    <h4 style="color: #1e40af; margin-bottom: 18px; font-size: 17px; display: flex; align-items: center; gap: 8px;">
-                                        <span>📊</span> Overall Assessment
-                                    </h4>
-                                    <div style="background: white; padding: 20px; border-radius: 8px; margin-bottom: 15px;">
-                                        <p style="line-height: 1.8; color: #334155; margin-bottom: 15px;">
-                                            <strong>Total Claims Analyzed:</strong> 5<br>
-                                            <strong>Fully Accurate:</strong> 4 claims (80%)<br>
-                                            <strong>Partially Accurate:</strong> 1 claim (20%)<br>
-                                            <strong>False/Misleading:</strong> 0 claims (0%)
-                                        </p>
-                                        <div style="background: #f0fdf4; padding: 15px; border-radius: 6px; border-left: 3px solid #22c55e;">
-                                            <p style="color: #166534; line-height: 1.7; font-size: 14px;">
-                                                <strong>✓ Verdict:</strong> This image contains mostly accurate and trustworthy information. The only clarification needed is that Aadhaar is recommended but NOT mandatory for voter registration. You can safely trust and share this information with the noted correction.
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
+            <div style="margin-top:15px;">
+                <h4>📌 Explanation</h4>
+                <p>${data.explanation || "No explanation available"}</p>
+            </div>
 
-                                <div style="margin-top: 25px; padding: 25px; background: white; border-radius: 10px; border: 2px solid #e5e7eb;">
-                                    <h4 style="margin-bottom: 18px; font-size: 17px; color: var(--color-primary);">📎 Verified Sources Used</h4>
-                                    <div style="display: grid; gap: 12px;">
-                                        <a href="https://eci.gov.in" target="_blank" style="padding: 15px; background: #f8fafc; border-radius: 8px; text-decoration: none; color: #0284c7; display: flex; align-items: center; gap: 10px; border: 1px solid #e2e8f0; transition: all 0.2s;">
-                                            <span>🔗</span>
-                                            <div>
-                                                <strong style="display: block; margin-bottom: 4px;">Election Commission of India</strong>
-                                                <span style="font-size: 13px; color: #64748b;">Press Release No. CEO/2025/542 - Voter Registration Extension</span>
-                                            </div>
-                                        </a>
-                                        <a href="https://voters.eci.gov.in" target="_blank" style="padding: 15px; background: #f8fafc; border-radius: 8px; text-decoration: none; color: #0284c7; display: flex; align-items: center; gap: 10px; border: 1px solid #e2e8f0; transition: all 0.2s;">
-                                            <span>🔗</span>
-                                            <div>
-                                                <strong style="display: block; margin-bottom: 4px;">National Voters' Service Portal</strong>
-                                                <span style="font-size: 13px; color: #64748b;">Official voter registration guidelines and forms</span>
-                                            </div>
-                                        </a>
-                                        <a href="https://legislative.gov.in" target="_blank" style="padding: 15px; background: #f8fafc; border-radius: 8px; text-decoration: none; color: #0284c7; display: flex; align-items: center; gap: 10px; border: 1px solid #e2e8f0; transition: all 0.2s;">
-                                            <span>🔗</span>
-                                            <div>
-                                                <strong style="display: block; margin-bottom: 4px;">Constitution of India - Article 326</strong>
-                                                <span style="font-size: 13px; color: #64748b;">Legal provisions for voter eligibility</span>
-                                            </div>
-                                        </a>
-                                        <a href="https://eci.gov.in" target="_blank" style="padding: 15px; background: #f8fafc; border-radius: 8px; text-decoration: none; color: #0284c7; display: flex; align-items: center; gap: 10px; border: 1px solid #e2e8f0; transition: all 0.2s;">
-                                            <span>🔗</span>
-                                            <div>
-                                                <strong style="display: block; margin-bottom: 4px;">ECI Document Requirements</strong>
-                                                <span style="font-size: 13px; color: #64748b;">Acceptable proofs for registration (Aadhaar optional)</span>
-                                            </div>
-                                        </a>
-                                    </div>
-                                </div>
+            <div style="margin-top:15px;font-size:14px;color:#555;">
+                Confidence: <strong>${data.confidence || 0}%</strong>
+            </div>
 
-                                <div style="margin-top: 25px; padding: 25px; background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border-radius: 10px; border-left: 5px solid #f59e0b;">
-                                    <h4 style="color: #92400e; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; font-size: 16px;">
-                                        <span>💡</span> What You Should Know
-                                    </h4>
-                                    <ul style="line-height: 2; color: #78350f; margin-left: 20px; font-size: 14px;">
-                                        <li>This image contains official information that is largely accurate</li>
-                                        <li>The only correction: Aadhaar is helpful but NOT mandatory for registration</li>
-                                        <li>You can register with alternative documents like birth certificate or PAN card</li>
-                                        <li>If sharing this image, please add a note about the Aadhaar clarification</li>
-                                        <li>Always verify electoral information on eci.gov.in before believing or sharing</li>
-                                    </ul>
-                                </div>
-                            `;
-                        }, 2500);
-                    }, 1500);
-                };
+        </div>
+    `;
+}
 
-                reader.readAsDataURL(input.files[0]);
-            }
-        }
+
 
         function openVoiceInput() {
             showModal('Voice Verification', `
@@ -1807,297 +1684,6 @@
                 </div>
             `);
         }
-        function openNewsDetail(index) {
-            const news = newsData[index];
-            const articles = {
-                0: {
-                    summary: "The Election Commission of India has officially announced comprehensive schedules for upcoming State Legislative Assembly elections across five states, marking a crucial phase in India's democratic process.",
-                    fullContent: `
-                        <p style="margin-bottom: 20px;">The Election Commission of India (ECI) has officially released the complete schedule for State Legislative Assembly elections to be held in five states: Punjab, Uttarakhand, Goa, Manipur, and Uttar Pradesh. This announcement follows extensive consultations with state governments, political parties, security agencies, and civil society organizations.</p>
-
-                        <h4 style="color: var(--color-primary); margin: 25px 0 15px 0; font-size: 18px;">📅 Complete Election Schedule</h4>
-                        <div style="background: #f0f9ff; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
-                            <ul style="line-height: 2; margin-left: 20px;">
-                                <li><strong>Notification Issue Date:</strong> February 15, 2026</li>
-                                <li><strong>Last Date for Filing Nominations:</strong> February 22, 2026</li>
-                                <li><strong>Scrutiny of Nominations:</strong> February 23, 2026</li>
-                                <li><strong>Last Date for Withdrawal:</strong> February 25, 2026</li>
-                                <li><strong>Date of Poll:</strong> March 28, 2026 (7:00 AM - 6:00 PM)</li>
-                                <li><strong>Counting of Votes:</strong> March 31, 2026 (8:00 AM onwards)</li>
-                                <li><strong>Results Declaration:</strong> March 31, 2026 (Expected by evening)</li>
-                            </ul>
-                        </div>
-
-                        <h4 style="color: var(--color-primary); margin: 25px 0 15px 0; font-size: 18px;">🔒 Model Code of Conduct</h4>
-                        <p style="margin-bottom: 15px;">The Model Code of Conduct comes into effect immediately upon this announcement and will remain in force until the completion of the election process. All political parties, candidates, and government officials must strictly adhere to these guidelines.</p>
-                        
-                        <div style="background: #fff4cc; padding: 20px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #f59e0b;">
-                            <strong>Key MCC Provisions:</strong>
-                            <ul style="line-height: 2; margin-left: 20px; margin-top: 10px;">
-                                <li>No new policy announcements by the government</li>
-                                <li>No use of official machinery for campaign purposes</li>
-                                <li>Strict regulation of election expenditure</li>
-                                <li>Ban on distribution of freebies near polling dates</li>
-                                <li>Restrictions on government advertisements</li>
-                            </ul>
-                        </div>
-
-                        <h4 style="color: var(--color-primary); margin: 25px 0 15px 0; font-size: 18px;">🎯 Special Measures for Fair Elections</h4>
-                        <p style="margin-bottom: 15px;">The Commission has announced several special measures to ensure free, fair, and transparent elections:</p>
-                        <ul style="line-height: 2; margin-left: 20px; margin-bottom: 20px;">
-                            <li><strong>Enhanced Security:</strong> Central Armed Police Forces will be deployed across all sensitive polling stations</li>
-                            <li><strong>Expenditure Monitoring:</strong> Flying squads and static surveillance teams will monitor cash and liquor movement</li>
-                            <li><strong>CCTV Coverage:</strong> All polling stations will have mandatory CCTV surveillance</li>
-                            <li><strong>Webcasting:</strong> Live webcasting will be conducted at vulnerable polling stations</li>
-                            <li><strong>Voter Awareness:</strong> Systematic Voters' Education and Electoral Participation (SVEEP) campaigns will be intensified</li>
-                        </ul>
-
-                        <h4 style="color: var(--color-primary); margin: 25px 0 15px 0; font-size: 18px;">📊 Electoral Statistics</h4>
-                        <div style="background: #f0f9ff; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
-                            <ul style="line-height: 2; margin-left: 20px;">
-                                <li><strong>Total Electors:</strong> Approximately 18.3 crore voters</li>
-                                <li><strong>Polling Stations:</strong> Over 2 lakh polling stations</li>
-                                <li><strong>Electoral Officers:</strong> Around 20 lakh polling personnel</li>
-                                <li><strong>First-time Voters:</strong> Approximately 1.5 crore young voters</li>
-                            </ul>
-                        </div>
-
-                        <h4 style="color: var(--color-primary); margin: 25px 0 15px 0; font-size: 18px;">💡 What This Means for Voters</h4>
-                        <p style="margin-bottom: 15px;">As a voter, you should:</p>
-                        <ul style="line-height: 2; margin-left: 20px;">
-                            <li>Verify your name in the electoral roll at <a href="https://voters.eci.gov.in" style="color: var(--color-secondary);">voters.eci.gov.in</a></li>
-                            <li>Carry your Voter ID card or any of the 12 prescribed alternative identification documents</li>
-                            <li>Arrive at your polling station early to avoid last-minute rush</li>
-                            <li>Report any violations of the Model Code of Conduct through the cVIGIL app</li>
-                        </ul>
-                    `,
-                    officialSource: "Press Release No. 125/2026, Election Commission of India",
-                    publishDate: "January 3, 2026 at 10:30 AM IST",
-                    verificationNote: "This information has been verified against official ECI press releases, notifications published in the Gazette of India, and cross-referenced with state election officer announcements."
-                },
-                1: {
-                    summary: "In a significant move to ensure maximum democratic participation, the Chief Electoral Officer has extended the voter registration deadline, providing citizens additional time to enroll in the electoral process.",
-                    fullContent: `
-                        <p style="margin-bottom: 20px;">The Chief Electoral Officer (CEO) has announced a crucial extension of the voter registration drive until January 15, 2026, giving eligible citizens who missed the earlier deadline an opportunity to register and exercise their democratic rights.</p>
-
-                        <h4 style="color: var(--color-primary); margin: 25px 0 15px 0; font-size: 18px;">🗓️ Extended Timeline Details</h4>
-                        <div style="background: #dcfce7; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
-                            <ul style="line-height: 2; margin-left: 20px;">
-                                <li><strong>Original Deadline:</strong> December 31, 2025</li>
-                                <li><strong>Extended Deadline:</strong> January 15, 2026 (11:59 PM)</li>
-                                <li><strong>Reason for Extension:</strong> High volume of pending applications and technical difficulties faced by some applicants</li>
-                                <li><strong>Final Electoral Roll Publication:</strong> January 25, 2026</li>
-                            </ul>
-                        </div>
-
-                        <h4 style="color: var(--color-primary); margin: 25px 0 15px 0; font-size: 18px;">📝 How to Register Online</h4>
-                        <p style="margin-bottom: 15px;">The registration process is completely digital and can be completed from home:</p>
-                        <div style="background: #f0f9ff; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
-                            <strong>Step-by-Step Registration Process:</strong>
-                            <ol style="line-height: 2; margin-left: 20px; margin-top: 10px;">
-                                <li>Visit the National Voters' Service Portal: <a href="https://voters.eci.gov.in" style="color: var(--color-secondary);">voters.eci.gov.in</a></li>
-                                <li>Click on "Register as New Voter" or "Form 6"</li>
-                                <li>Enter your personal details (Name, Date of Birth, Address)</li>
-                                <li>Upload required documents:
-                                    <ul style="margin-left: 20px; margin-top: 10px;">
-                                        <li>Age Proof (Birth Certificate, School Certificate, PAN Card, etc.)</li>
-                                        <li>Address Proof (Aadhaar Card, Utility Bills, Rent Agreement, etc.)</li>
-                                        <li>Recent passport-size photograph</li>
-                                    </ul>
-                                </li>
-                                <li>Submit your Aadhaar number for verification (optional but recommended)</li>
-                                <li>Submit the application and note down the Reference Number</li>
-                                <li>Track your application status using the reference number</li>
-                            </ol>
-                        </div>
-
-                        <h4 style="color: var(--color-primary); margin: 25px 0 15px 0; font-size: 18px;">✅ Eligibility Criteria</h4>
-                        <div style="background: #fff4cc; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
-                            <p style="margin-bottom: 10px;">You are eligible to register as a voter if you meet ALL of the following conditions:</p>
-                            <ul style="line-height: 2; margin-left: 20px;">
-                                <li>✓ You are a citizen of India</li>
-                                <li>✓ You are 18 years of age or older as of January 1, 2026 (i.e., born on or before January 1, 2008)</li>
-                                <li>✓ You are ordinarily resident of the constituency where you wish to register</li>
-                                <li>✓ You are not disqualified under any law for being registered as a voter</li>
-                            </ul>
-                        </div>
-
-                        <h4 style="color: var(--color-primary); margin: 25px 0 15px 0; font-size: 18px;">🏢 Special Registration Camps</h4>
-                        <p style="margin-bottom: 15px;">To facilitate registration, special camps have been organized:</p>
-                        <ul style="line-height: 2; margin-left: 20px; margin-bottom: 20px;">
-                            <li><strong>Location:</strong> All district and block offices, colleges, and community centers</li>
-                            <li><strong>Timing:</strong> Every day from 10:00 AM to 5:00 PM (including weekends)</li>
-                            <li><strong>Mobile Units:</strong> Vans equipped with registration facilities will visit remote areas and villages</li>
-                            <li><strong>Helpdesk Support:</strong> Trained officials available to assist with document verification and form filling</li>
-                        </ul>
-
-                        <h4 style="color: var(--color-primary); margin: 25px 0 15px 0; font-size: 18px;">📞 Need Help?</h4>
-                        <div style="background: #fef2f2; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
-                            <p style="margin-bottom: 10px;"><strong>Contact Options:</strong></p>
-                            <ul style="line-height: 2; margin-left: 20px;">
-                                <li><strong>Helpline Number:</strong> 1950 (Toll-Free)</li>
-                                <li><strong>Email:</strong> helpdesk@eci.gov.in</li>
-                                <li><strong>Mobile App:</strong> Download "Voter Helpline" app from Play Store/App Store</li>
-                                <li><strong>WhatsApp:</strong> Send "Hi" to +91-1950 for assistance</li>
-                            </ul>
-                        </div>
-
-                        <h4 style="color: var(--color-primary); margin: 25px 0 15px 0; font-size: 18px;">⚠️ Important Notes</h4>
-                        <ul style="line-height: 2; margin-left: 20px;">
-                            <li>Processing of applications may take 7-10 working days</li>
-                            <li>Field verification by Booth Level Officers (BLO) will be conducted for all new registrations</li>
-                            <li>Objections, if any, can be raised during the public display period</li>
-                            <li>Once approved, your name will appear in the final electoral roll published on January 25, 2026</li>
-                            <li>You can download your e-EPIC (digital voter ID) immediately after approval</li>
-                        </ul>
-                    `,
-                    officialSource: "Office of the Chief Electoral Officer, Notification No. CEO/2025/542",
-                    publishDate: "January 2, 2026 at 2:15 PM IST",
-                    verificationNote: "Information verified with CEO office notifications, NVSP portal updates, and official state election department circulars."
-                },
-                2: {
-                    summary: "The Ministry of Law and Justice has released comprehensive guidelines aimed at ensuring unprecedented transparency in electoral processes through enhanced monitoring and digital mechanisms.",
-                    fullContent: `
-                        <p style="margin-bottom: 20px;">In a landmark move to strengthen electoral integrity, the Ministry of Law and Justice, in collaboration with the Election Commission of India, has issued detailed guidelines incorporating cutting-edge technology and stricter accountability measures for all stakeholders in the electoral process.</p>
-
-                        <h4 style="color: var(--color-primary); margin: 25px 0 15px 0; font-size: 18px;">🎯 Key Transparency Measures</h4>
-                        
-                        <div style="background: #f0f9ff; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
-                            <strong>1. Real-Time Voter List Updates</strong>
-                            <ul style="line-height: 2; margin-left: 20px; margin-top: 10px;">
-                                <li>Continuous updating of electoral rolls instead of periodic revisions</li>
-                                <li>Monthly publication of additions and deletions</li>
-                                <li>SMS/email notifications to voters about any changes</li>
-                                <li>Public accessibility of draft rolls for 15 days before finalization</li>
-                            </ul>
-                        </div>
-
-                        <div style="background: #dcfce7; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
-                            <strong>2. Comprehensive CCTV and Webcasting</strong>
-                            <ul style="line-height: 2; margin-left: 20px; margin-top: 10px;">
-                                <li>Mandatory CCTV installation at ALL polling stations (100% coverage)</li>
-                                <li>Live webcasting from 50% of polling stations, increasing to 100% in vulnerable areas</li>
-                                <li>360-degree cameras at counting centers</li>
-                                <li>Recording retention for 6 months for audit purposes</li>
-                                <li>Real-time monitoring by ECI control room</li>
-                            </ul>
-                        </div>
-
-                        <div style="background: #fff4cc; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
-                            <strong>3. Enhanced Expenditure Monitoring</strong>
-                            <ul style="line-height: 2; margin-left: 20px; margin-top: 10px;">
-                                <li>Digital tracking of all campaign expenditures above ₹10,000</li>
-                                <li>Mandatory linking of candidate bank accounts with ECI portal</li>
-                                <li>Video recording of all physical cash movements by candidates</li>
-                                <li>Flying squads with AI-powered surveillance equipment</li>
-                                <li>Real-time expenditure dashboard accessible to public</li>
-                            </ul>
-                        </div>
-
-                        <h4 style="color: var(--color-primary); margin: 25px 0 15px 0; font-size: 18px;">📱 Digital Trail Requirements</h4>
-                        <p style="margin-bottom: 15px;">All election-related communications must maintain digital records:</p>
-                        <ul style="line-height: 2; margin-left: 20px; margin-bottom: 20px;">
-                            <li>Pre-certification of all campaign materials (print, digital, audio-visual)</li>
-                            <li>Blockchain-based storage of candidate affidavits and disclosures</li>
-                            <li>Digital signatures on all official election communications</li>
-                            <li>Geo-tagged photographs of public meetings and rallies</li>
-                            <li>WhatsApp chatbot for instant complaint registration</li>
-                        </ul>
-
-                        <h4 style="color: var(--color-primary); margin: 25px 0 15px 0; font-size: 18px;">⚖️ Penalties for Violations</h4>
-                        <div style="background: #fef2f2; padding: 20px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #dc2626;">
-                            <p style="margin-bottom: 10px;"><strong>Strict enforcement provisions include:</strong></p>
-                            <ul style="line-height: 2; margin-left: 20px;">
-                                <li>Immediate show-cause notices for expenditure violations</li>
-                                <li>Disqualification for concealment of information</li>
-                                <li>Criminal prosecution under Section 171E-171H of IPC</li>
-                                <li>Freezing of bank accounts for financial irregularities</li>
-                                <li>Imprisonment up to 3 years for serious violations</li>
-                            </ul>
-                        </div>
-
-                        <h4 style="color: var(--color-primary); margin: 25px 0 15px 0; font-size: 18px;">👥 Stakeholder Responsibilities</h4>
-                        
-                        <p style="margin-bottom: 10px;"><strong>Political Parties must:</strong></p>
-                        <ul style="line-height: 2; margin-left: 20px; margin-bottom: 15px;">
-                            <li>Submit detailed expenditure reports within 30 days of poll date</li>
-                            <li>Maintain audited accounts of all election-related expenses</li>
-                            <li>Declare sources of funding above ₹20,000</li>
-                            <li>Comply with contribution limits from individuals and corporates</li>
-                        </ul>
-
-                        <p style="margin-bottom: 10px;"><strong>Candidates must:</strong></p>
-                        <ul style="line-height: 2; margin-left: 20px; margin-bottom: 15px;">
-                            <li>File daily expenditure statements</li>
-                            <li>Maintain shadow observers appointed by ECI</li>
-                            <li>Obtain pre-approval for all major campaign events</li>
-                            <li>Submit complete asset and liability declarations</li>
-                        </ul>
-
-                        <p style="margin-bottom: 10px;"><strong>Election Officials must:</strong></p>
-                        <ul style="line-height: 2; margin-left: 20px; margin-bottom: 20px;">
-                            <li>Undergo mandatory integrity training</li>
-                            <li>Declare any political affiliations or conflicts of interest</li>
-                            <li>Maintain digital logs of all decisions and actions</li>
-                            <li>Submit daily reports to District Election Officers</li>
-                        </ul>
-
-                        <h4 style="color: var(--color-primary); margin: 25px 0 15px 0; font-size: 18px;">💡 How Voters Benefit</h4>
-                        <p style="margin-bottom: 15px;">These measures ensure:</p>
-                        <ul style="line-height: 2; margin-left: 20px;">
-                            <li>Complete transparency in electoral funding and expenditure</li>
-                            <li>Level playing field for all candidates regardless of resources</li>
-                            <li>Protection from manipulation and money power influence</li>
-                            <li>Confidence that every vote is counted accurately</li>
-                            <li>Easy access to information for informed decision-making</li>
-                        </ul>
-                    `,
-                    officialSource: "Ministry of Law & Justice Notification No. MLJ/2026/018, Election Commission Guidelines EC/2026/TRANS/001",
-                    publishDate: "January 1, 2026 at 11:00 AM IST",
-                    verificationNote: "Verified against official Gazette notifications, ECI website updates, and ministry press releases."
-                }
-            };
-
-            const article = articles[index] || articles[0];
-
-            showModal(news.headline, `
-                <div style="background: linear-gradient(135deg, ${news.color} 0%, ${adjustColor(news.color, -20)} 100%); padding: 30px; border-radius: 12px; margin-bottom: 25px; text-align: center;">
-                    <div style="font-size: 80px; margin-bottom: 15px;">${news.icon}</div>
-                    <div class="verified-stamp" style="position: static; display: inline-flex; margin-bottom: 10px;">✓ Verified Official Source</div>
-                </div>
-
-                <div style="background: #f0f9ff; padding: 20px; border-radius: 8px; margin-bottom: 25px; border-left: 4px solid var(--color-secondary);">
-                    <h4 style="color: var(--color-secondary); margin-bottom: 12px; font-size: 16px;">📋 Article Summary</h4>
-                    <p style="line-height: 1.8; color: #334155;">${article.summary}</p>
-                </div>
-
-                <div style="margin-bottom: 20px;">
-                    <div style="color: ${news.color}; font-weight: 600; font-size: 15px; margin-bottom: 8px;">📰 ${news.source}</div>
-                    <div style="font-size: 13px; color: #64748b; margin-bottom: 15px;">
-                        📅 ${article.publishDate}<br>
-                        🔖 Reference: ${article.officialSource}
-                    </div>
-                </div>
-
-                <article style="line-height: 1.8; color: #334155; font-size: 15px;">
-                    ${article.fullContent}
-                </article>
-
-                <div style="margin-top: 35px; padding: 25px; background: #dcfce7; border-radius: 10px; border-left: 5px solid #059669;">
-                    <h4 style="color: #047857; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
-                        <span>✓</span> Verification Status
-                    </h4>
-                    <p style="line-height: 1.7; color: #065f46; margin-bottom: 12px;">${article.verificationNote}</p>
-                    <p style="font-size: 13px; color: #047857; font-style: italic;">This information is 100% accurate and comes directly from official government sources. You can trust and share this information with confidence.</p>
-                </div>
-
-                <div style="margin-top: 25px; text-align: center; padding: 20px; background: #f8fafc; border-radius: 8px;">
-                    <p style="font-size: 13px; color: #64748b;">
-                        For more information, visit <a href="https://eci.gov.in" target="_blank" style="color: var(--color-secondary); font-weight: 600;">eci.gov.in</a> or call the ECI Helpline: <strong>1950</strong>
-                    </p>
-                </div>
-            `);
-        }
 
         function showModal(title, content) {
             const existingModal = document.querySelector('.modal');
@@ -2130,9 +1716,105 @@
 
 
         // Initialize
-        window.onload = () => {
-            loadNews();
-        };
+       // window.onload = () => {
+          //  loadNews();
+       // };
+       async function loadVerifiedNews() {
+    const grid = document.getElementById("newsGrid");
+    grid.innerHTML = "<p>Loading verified election news...</p>";
+
+    try {
+        const response = await fetch("http://127.0.0.1:8000/verified-news");
+        const news = await response.json();
+
+        if (!news.length) {
+            grid.innerHTML = "<p>No verified election news found.</p>";
+            return;
+        }
+
+        grid.innerHTML = news.map(item => `
+            <div class="news-card animate-in">
+                <div class="news-banner" style="background:#059669;">
+                    <span>🗳️</span>
+                    <div class="verified-stamp">Verified</div>
+                </div>
+
+                <div class="news-body">
+                    <div class="news-source">${item.source}</div>
+                    <div class="news-title">${item.title}</div>
+
+                    <div class="news-meta">
+                        📅 ${item.published}
+                    </div>
+
+                    <a href="${item.link}" target="_blank" class="card-btn">
+                        View Source →
+                    </a>
+                </div>
+            </div>
+        `).join("");
+
+    } catch (error) {
+        grid.innerHTML = "<p>Unable to load verified news.</p>";
+    }
+}
+
+        async function verifyText() {
+    const text = document.getElementById("newsInput").value.trim();
+    const resultDiv = document.getElementById("textResult");
+
+    if (!text) {
+        resultDiv.innerHTML = "<p style='color:red;'>Please enter some text.</p>";
+        return;
+    }
+
+    resultDiv.innerHTML = "⏳ Verifying using AI model...";
+
+    try {
+        const response = await fetch("http://127.0.0.1:8000/predict", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ text: text })
+        });
+
+        const data = await response.json();
+
+      let color = "#059669"; // green (default)
+let icon = "✅";
+
+if (data.label.includes("FAKE")) {
+    color = "#dc2626"; // red
+    icon = "🚨";
+} else if (data.label.includes("UNCERTAIN")) {
+    color = "#dc2626"; // red
+    icon = "⚠️";
+} else if (data.label.includes("REAL")) {
+    color = "#059669"; // green
+    icon = "✅";
+} else if (data.label.includes("TRUSTWORTHY")) {
+    color = "#059669"; // green
+    icon = "✅";
+}
+
+
+        resultDiv.innerHTML = `
+            <div style="padding:20px;border-radius:10px;border-left:6px solid ${color};background:#f8fafc;">
+                <h3 style="color:${color};margin-bottom:10px;">
+                    ${icon} ${data.label} NEWS
+                </h3>
+                <p><strong>Confidence:</strong> ${data.confidence}%</p>
+                <p style="font-size:13px;color:#555;margin-top:10px;">
+                    ⚠ AI-based result. Verify with official sources.
+                </p>
+            </div>
+        `;
+    } catch (error) {
+        resultDiv.innerHTML = "<p style='color:red;'>❌ Server not reachable.</p>";
+    }
+}
+loadVerifiedNews();
     </script>
 </body>
 
