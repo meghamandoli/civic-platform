@@ -1211,8 +1211,16 @@
         }
 
         function scrollToNews() {
-            document.getElementById('newsSection').scrollIntoView({ behavior: 'smooth' });
+    showTab('news');
+
+    setTimeout(() => {
+        const section = document.getElementById('newsSection');
+        if (section) {
+            section.scrollIntoView({ behavior: 'smooth' });
         }
+    }, 150);
+}
+
 
         function toggleLanguage() {
             currentLang = currentLang === 'en' ? 'hi' : 'en';
@@ -1946,18 +1954,35 @@ async function verifyVoiceText(text) {
        // window.onload = () => {
           //  loadNews();
        // };
+       function showTab(tab) {
+    // Hide all tab sections
+    document.querySelectorAll('.tab-section').forEach(sec => {
+        sec.classList.remove('active');
+    });
 
-       function scrollToNews() {
-    // Switch to News tab
-    showTab('news');
+    // Remove active class from nav
+    document.querySelectorAll('.nav-item').forEach(item => {
+        item.classList.remove('active');
+    });
 
-    // Small delay to allow tab to render
-    setTimeout(() => {
-        const section = document.getElementById('newsSection');
-        if (section) {
-            section.scrollIntoView({ behavior: 'smooth' });
-        }
-    }, 100);
+    // Show selected tab
+    if (tab === 'services') {
+        document.getElementById('servicesTab').classList.add('active');
+        document.querySelector('[onclick="showTab(\'services\')"]').classList.add('active');
+    }
+    else if (tab === 'news') {
+        document.getElementById('newsTab').classList.add('active');
+        document.querySelector('[onclick="showTab(\'news\')"]').classList.add('active');
+        loadVerifiedNews();
+    }
+    else if (tab === 'verify') {
+        document.getElementById('verifyTab').classList.add('active');
+        document.querySelector('[onclick="showTab(\'verify\')"]').classList.add('active');
+    }
+    else if (tab === 'education') {
+        document.getElementById('educationTab').classList.add('active');
+        document.querySelector('[onclick="showTab(\'education\')"]').classList.add('active');
+    }
 }
 
        async function loadVerifiedNews() {
