@@ -1311,56 +1311,103 @@ function renderImageResult(data) {
 
 
         function openVoiceInput() {
-            showModal('Voice Verification', `
-                <div style="text-align: center; padding: 40px;">
-                    <button onclick="toggleRecording(this)" style="width: 120px; height: 120px; border-radius: 60px; background: linear-gradient(135deg, #f47820 0%, #ff8c42 100%); border: none; color: white; font-size: 50px; cursor: pointer; box-shadow: 0 10px 30px rgba(244, 120, 32, 0.3);">
-                        🎤
-                    </button>
-                    <p style="margin-top: 20px; color: #64748b;" id="voiceStatus">Tap to start recording</p>
-                    <div id="voiceTranscript" style="margin-top: 20px; padding: 20px; background: #f8fafc; border-radius: 8px; min-height: 80px;">
-                        <em style="color: #94a3b8;">Your spoken text will appear here...</em>
-                    </div>
-                </div>
-                <div id="voiceResult"></div>
-            `);
+    showModal('Voice Verification', `
+        <div style="text-align: center; padding: 40px;">
+            <button id="micBtn" onclick="startVoiceRecognition()" 
+                style="width:120px;height:120px;border-radius:60px;
+                background:linear-gradient(135deg,#f47820,#ff8c42);
+                border:none;color:white;font-size:50px;cursor:pointer;">
+                🎤
+            </button>
+
+            <p style="margin-top:20px;color:#64748b;" id="voiceStatus">
+                Tap to start recording
+            </p>
+
+            <div id="voiceTranscript" 
+                style="margin-top:20px;padding:20px;background:#f8fafc;
+                border-radius:8px;min-height:80px;">
+                <em style="color:#94a3b8;">Your spoken text will appear here...</em>
+            </div>
+        </div>
+
+        <div id="voiceResult"></div>
+    `);
+}
+function startVoiceRecognition() {
+    const SpeechRecognition =
+        window.SpeechRecognition || window.webkitSpeechRecognition;
+
+    if (!SpeechRecognition) {
+        alert("Voice recognition not supported");
+        return;
+    }
+
+    const recognition = new SpeechRecognition();
+    recognition.lang = "en-IN";
+    recognition.interimResults = false;
+
+    const status = document.getElementById("voiceStatus");
+    const transcriptDiv = document.getElementById("voiceTranscript");
+
+    status.textContent = "🎙️ Listening...";
+    transcriptDiv.innerHTML = "<em>Listening...</em>";
+
+    recognition.start();
+
+    recognition.onresult = async (event) => {
+        const spokenText = event.results[0][0].transcript;
+
+        transcriptDiv.innerHTML = `<p>"${spokenText}"</p>`;
+        status.textContent = "🔍 Verifying...";
+
+        verifyVoiceText(spokenText);
+    };
+
+    recognition.onerror = (event) => {
+        status.textContent = "❌ Error: " + event.error;
+    };
+}
+async function verifyVoiceText(text) {
+    const resultDiv = document.getElementById("voiceResult");
+
+    resultDiv.innerHTML = "⏳ Verifying using AI model...";
+
+    try {
+        const response = await fetch("http://127.0.0.1:8000/predict", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ text })
+        });
+
+        const data = await response.json();
+
+        let color = "#059669";
+        let icon = "✅";
+
+        if (data.label.includes("FAKE") || data.label.includes("UNCERTAIN")) {
+            color = "#dc2626";
+            icon = "🚨";
         }
 
-        function toggleRecording(btn) {
-            const status = document.getElementById('voiceStatus');
-            const transcript = document.getElementById('voiceTranscript');
+        resultDiv.innerHTML = `
+            <div style="margin-top:20px;padding:20px;
+                border-left:6px solid ${color};
+                background:#f8fafc;border-radius:8px;">
+                <h3 style="color:${color};margin-bottom:10px;">
+                    ${icon} ${data.label}
+                </h3>
+                <p><strong>Confidence:</strong> ${data.confidence}%</p>
+                <p style="font-size:13px;color:#555;margin-top:10px;">
+                    ⚠ AI-based result. Verify with official sources.
+                </p>
+            </div>
+        `;
 
-            btn.style.animation = 'pulse 1.5s infinite';
-            status.textContent = 'Listening...';
-
-            setTimeout(() => {
-                transcript.innerHTML = '<p>"I heard that voter registration has been extended to January 15"</p>';
-                setTimeout(() => {
-                    btn.style.animation = '';
-                    status.textContent = 'Processing...';
-                    showVoiceResults();
-                }, 2000);
-            }, 1500);
-        }
-
-        function showVoiceResults() {
-            document.getElementById('voiceResult').innerHTML = `
-                <div style="margin-top: 20px; padding: 20px; background: #dcfce7; border-radius: 8px; text-align: center;">
-                   <div style="font-size: 14px; color: #15803d; font-weight: 600; margin-bottom: 8px;">
-  ${t('credibilityScore')}
-</div>
-<div style="font-size: 36px; font-weight: 700; color: #059669;">
-  ${t('high')}
-</div>
-
-                </div>
-                <div style="margin-top: 20px; padding: 20px; background: white; border-radius: 8px; border: 1px solid #e5e7eb;">
-                    <h4 style="margin-bottom: 15px;">✅ Statement Verified</h4>
-                    <p style="line-height: 1.8; color: #4b5563;">
-                        Your statement is accurate. The Election Commission has officially extended voter registration to January 15, 2026.
-                    </p>
-                </div>
-            `;
-        }
+    } catch (error) {
+        resultDiv.innerHTML = "<p style='color:red;'>❌ Server error</p>";
+    }
+}
 
         function openONOE() {
             showModal('One Nation, One Election - Interactive Guide', `
