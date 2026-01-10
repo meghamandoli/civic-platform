@@ -14,6 +14,11 @@ from transformers import pipeline
 import pytesseract
 import cv2
 import numpy as np
+from datetime import datetime
+from pydantic import BaseModel
+import json
+import os
+
 pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
 # ================= VERIFIED NEWS FEATURE =================
 
@@ -247,3 +252,31 @@ async def upload_image(file: UploadFile = File(...)):
         "confidence": confidence,
         "explanation": explanation
     }
+class ReportInput(BaseModel):
+    type: str
+    content: str
+    source: str | None = None
+
+@app.post("/report-misinformation")
+def report_misinformation(data: ReportInput):
+    report = {
+        "type": data.type,
+        "content": data.content,
+        "source": data.source,
+        "timestamp": datetime.utcnow().isoformat()
+    }
+
+    file_path = "reported_misinformation.json"
+
+    if os.path.exists(file_path):
+        with open(file_path, "r") as f:
+            reports = json.load(f)
+    else:
+        reports = []
+
+    reports.append(report)
+
+    with open(file_path, "w") as f:
+        json.dump(reports, f, indent=2)
+
+    return {"status": "success"}

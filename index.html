@@ -1778,8 +1778,38 @@ async function verifyVoiceText(text) {
         }
 
         function openContact() {
-            showModal(t('contact'), `<p>${t('reportNow')} (Demo UI only)</p>`);
-        }
+    showModal("Report Misinformation", `
+        <div style="padding:20px;">
+            <p style="font-size:14px;color:#555;margin-bottom:15px;">
+                Report suspicious election-related information for review.
+            </p>
+
+            <label style="font-weight:600;">Type of Content</label>
+            <select id="reportType" style="width:100%;padding:10px;margin:8px 0;">
+                <option value="text">Text</option>
+                <option value="image">Image</option>
+                <option value="voice">Voice</option>
+            </select>
+
+            <label style="font-weight:600;">Description / Content</label>
+            <textarea id="reportText"
+                placeholder="Paste text, describe image or voice message..."
+                style="width:100%;height:120px;padding:10px;"></textarea>
+
+            <label style="font-weight:600;">Optional Source (URL)</label>
+            <input id="reportSource"
+                placeholder="WhatsApp, Twitter, URL etc."
+                style="width:100%;padding:10px;margin-bottom:15px;"/>
+
+            <button class="card-btn" onclick="submitReport()">
+                🚨 Submit Report
+            </button>
+
+            <div id="reportResult" style="margin-top:15px;"></div>
+        </div>
+    `);
+}
+
 
 
         function openVoterGuide() {
@@ -1866,6 +1896,46 @@ async function verifyVoiceText(text) {
 
     } catch (error) {
         grid.innerHTML = "<p>Unable to load verified news.</p>";
+    }
+}
+  
+async function submitReport() {
+    const type = document.getElementById("reportType").value;
+    const text = document.getElementById("reportText").value.trim();
+    const source = document.getElementById("reportSource").value.trim();
+    const resultDiv = document.getElementById("reportResult");
+
+    if (!text) {
+        resultDiv.innerHTML = "<p style='color:red;'>Please provide details.</p>";
+        return;
+    }
+
+    resultDiv.innerHTML = "⏳ Submitting report...";
+
+    try {
+        const res = await fetch("http://127.0.0.1:8000/report-misinformation", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                type,
+                content: text,
+                source
+            })
+        });
+
+        const data = await res.json();
+
+        resultDiv.innerHTML = `
+            <div style="background:#fef2f2;padding:15px;
+                border-left:5px solid #dc2626;border-radius:8px;">
+                <strong>✅ Report Submitted</strong>
+                <p style="font-size:13px;margin-top:6px;">
+                    Thank you. This information has been recorded for review.
+                </p>
+            </div>
+        `;
+    } catch (err) {
+        resultDiv.innerHTML = "<p style='color:red;'>Server error.</p>";
     }
 }
 
