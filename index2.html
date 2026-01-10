@@ -664,14 +664,6 @@
         .animate-in {
             animation: slideUp 0.6s ease forwards;
         }
-        .tab-section {
-    display: none;
-}
-
-.tab-section.active {
-    display: block;
-}
-
     </style>
 </head>
 
@@ -708,25 +700,15 @@
     <!-- Navigation -->
     <nav class="nav-bar">
         <div class="nav-content">
-            <a href="#" class="nav-item active" onclick="showTab('services')"
-   data-en="Services" data-hi="सेवाएं">Services</a>
-
-<a href="#" class="nav-item" onclick="showTab('news')"
-   data-en="News" data-hi="समाचार">News</a>
-
-<a href="#" class="nav-item" onclick="showTab('verify')"
-   data-en="Verify Info" data-hi="जानकारी सत्यापित करें">Verify Info</a>
-
-<a href="#" class="nav-item" onclick="showTab('education')"
-   data-en="Education" data-hi="शिक्षा">Education</a>
-
+            <a href="#" class="nav-item active" data-en="Services" data-hi="सेवाएं">Services</a>
+            <a href="#" class="nav-item" data-en="News" data-hi="समाचार">News</a>
+            <a href="#" class="nav-item" data-en="Verify Info" data-hi="जानकारी सत्यापित करें">Verify Info</a>
+            <a href="#" class="nav-item" data-en="Education" data-hi="शिक्षा">Education</a>
         </div>
     </nav>
 
     <!-- Main Container -->
-    <div class="container">
-        <div id="verifyTab" class="tab-section">
-<!-- AI Fake News Text Verification -->
+    <div class="container"><!-- AI Fake News Text Verification -->
 <div class="section-header">
     VERIFY NEWS TEXT (AI)
 </div>
@@ -751,10 +733,7 @@
 
     <div id="textResult" style="margin-top:20px;"></div>
 </div>
-</div>
 
-
-<div id="servicesTab" class="tab-section active">
 
         <!-- Services Section -->
         <div class="section-header" data-en="SERVICES" data-hi="सेवाएं">SERVICES</div>
@@ -890,8 +869,6 @@
                 Note: This is an educational platform. For official services, we guide you to eci.gov.in.
             </p>
         </div>
-</div>
-<div id="newsTab" class="tab-section">
 
         <!-- News Section -->
         <div class="section-header" data-en="VERIFIED NEWS" data-hi="सत्यापित समाचार" id="newsSection">VERIFIED NEWS
@@ -900,30 +877,8 @@
         <div class="news-grid" id="newsGrid">
             <!-- News cards will be generated here -->
         </div>
-        </div>
-
             </div>
         </div>
-<div id="educationTab" class="tab-section">
-    <div class="section-header">EDUCATION</div>
-
-    <div class="card-grid">
-        <div class="service-card" style="background: var(--color-purple);">
-            <div class="card-header">
-                <div class="card-icon" style="background:#b89ee3;">🇮🇳</div>
-                <div class="card-content">
-                    <div class="card-title">One Nation, One Election</div>
-                    <div class="card-description">
-                        Learn about voting, reforms, and official resources.
-                    </div>
-                </div>
-            </div>
-            <div class="card-actions">
-                <button class="card-btn" onclick="openONOE()">Learn More</button>
-            </div>
-        </div>
-    </div>
-</div>
 
         <!-- About Section -->
         <div class="about-section">
@@ -1946,33 +1901,6 @@ async function verifyVoiceText(text) {
        // window.onload = () => {
           //  loadNews();
        // };
-
-       function showTab(tab) {
-    // Hide all sections
-    document.querySelectorAll('.tab-section').forEach(s => {
-        s.classList.remove('active');
-    });
-
-    // Remove active nav state
-    document.querySelectorAll('.nav-item').forEach(n => {
-        n.classList.remove('active');
-    });
-
-    // Show selected tab
-    if (tab === 'services') {
-        document.getElementById('servicesTab').classList.add('active');
-    } else if (tab === 'news') {
-        document.getElementById('newsTab').classList.add('active');
-        loadVerifiedNews();
-    } else if (tab === 'verify') {
-        document.getElementById('verifyTab').classList.add('active');
-    } else if (tab === 'education') {
-        document.getElementById('educationTab').classList.add('active');
-    }
-
-    event.target.classList.add('active');
-}
-
        async function loadVerifiedNews() {
     const grid = document.getElementById("newsGrid");
     grid.innerHTML = "<p>Loading verified election news...</p>";
