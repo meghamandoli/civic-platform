@@ -1,0 +1,16 @@
+text,label,predicted_label
+Election Commission of India releases official voter turnout data,0,0
+EVMs were hacked overnight to manipulate election results,1,1
+eci.gov.in publishes final election results for all states,0,0
+Breaking news: voting machines secretly reprogrammed,1,1
+Supreme Court monitors the election process to ensure fairness,0,0
+Foreign agencies controlled the national election outcome,1,1
+Official notification issued by ECI regarding polling dates,0,0
+Fake video shows election officers tampering with EVMs,1,1
+Government releases final election expenditure report,0,0
+Voting will be cancelled nationwide due to system failure,1,0
+Polling conducted peacefully across all constituencies,0,0
+Secret deal between election officials and candidates exposed,1,1
+Election Commission launches voter awareness campaign,0,0
+Ballots were replaced at night before counting began,1,1
+Final seat tally announced on official government portals,0,0
